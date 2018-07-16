@@ -310,8 +310,8 @@ public class LoginOrSignUpActivity extends AppCompatActivity {
                                     String phoneNumberString = phoneNumber.toString().substring(1);
                                     NetworkUtils.setPhoneNumber(phoneNumberString);
                                     Log.e(TAG, phoneNumberString);
+                                    NetworkUtils.setCurrent_db_url(phoneNumberString);
 
-                                    NetworkUtils.setPhoneNumber("254713740504");
                                     new ProfileAsyncTask().execute(NetworkUtils.getTestUrl());
                                 }
 
@@ -327,7 +327,7 @@ public class LoginOrSignUpActivity extends AppCompatActivity {
 
                         });
                 }else {
-                    Toast.makeText(this, "Result ! %s" + result.getAuthorizationCode(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "Result ! %s" + result.getAuthorizationCode(), Toast.LENGTH_SHORT).show();
                 }
 
 
