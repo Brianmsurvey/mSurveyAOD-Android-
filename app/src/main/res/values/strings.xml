@@ -1,0 +1,82 @@
+<resources>
+    <string name="frag1title">Profile</string>
+    <string name="frag2title">Surveys</string>
+    <string name="frag3title">Cashbacks</string>
+
+    <!--Profile-->
+    <string name="airtime_earned">AIRTIME EARNED</string>
+    <string name="this_month">This Month</string>
+    <string name="amount_earned">AMOUNT EARNED</string>
+    <string name="questions_completed">QUESTIONS COMPLETED</string>
+    <string name="surveys_completed">SURVEYS COMPLETED</string>
+    <string name="amount_earned_no">140</string>
+    <string name="questions_completed_no">23</string>
+    <string name="airtime_earned_cash">3,245</string>
+    <string name="ksh">KSH</string>
+    <string name="msurvey_name">mSurvey</string>
+    <string name="msurvey_motto">Real people. Real thoughts. \n Real time.</string>
+
+    <!--Mock Store -->
+    <string name="store_name">Java Coffee House</string>
+    <string name="store_sent_time">Wednesday, 24th Sep 2018. 12:53pm</string>
+    <string name="rate_your_experience">Rate your experience</string>
+    <string name="tellussomething">Tell us something</string>
+    <string name="submit_btn">Submit</string>
+
+    <!--facebook account kit-->
+    <!--<string name="app_name">mSurvey Project M</string>-->
+    <!--<string name="FACEBOOK_APP_ID">240195956789125</string>-->
+    <!--<string name="ACCOUNT_KIT_CLIENT_TOKEN">bc754174131e1a8e1e94381a8cff8e85</string>-->
+
+
+    <string name="app_name">mSurvey AOD</string>
+    <string name="facebook_app_id">414818642357592</string>
+    <string name="FACEBOOK_APP_ID">414818642357592</string>
+    <string name="ACCOUNT_KIT_CLIENT_TOKEN">40ce4edb21fdc5eec6beb2faa67e72d6</string>
+    <string name="fb_login_protocol_scheme">fb414818642357592</string>
+
+    <string name="Loginwithnumber">Login with Phone Number</string>
+    <string name="Loginwithfacebook">Login with Facebook</string>
+    <string name="LogOut">Log Out</string>
+
+    <!--Emoji Responses-->
+    <string name="veryhappy">Excellent</string>
+    <string name="happy">Good</string>
+    <string name="neutral">Okay</string>
+    <string name="sad">Poor</string>
+    <string name="angry">Terrible</string>
+
+
+    <string name="cashvsdebitcards">Cash vs Debit Cards?</string>
+    <string name="carsvsmatatus">Cars vs Matatus?</string>
+    <string name="radiovstv">Radio vs TV?</string>
+    <string name="samsungvstechno">Samsung vs Techno?</string>
+    <string name="eatingouttoday">Eating out today?</string>
+
+    <string name="fivequestions">5 questions</string>
+    <string name="eightquestions">8 questions</string>
+    <string name="threequestions">3 questions</string>
+    <string name="sixquestions">6 questions</string>
+    <string name="sevenquestions">7 questions</string>
+
+    <!--menu items-->
+    <string name="about_msurvey">About mSurvey</string>
+    <string name="item_profile">Profile</string>
+
+    <!--dummy user-->
+    <string name="dummy_user">Brian Ngugi</string>
+    <string name="dummy_user_email">brian.ngugi@msurvey.co</string>
+
+    <string name="changephoto">Change Photo</string>
+
+    <!--Log In or Sign Up Page-->
+    <string name="log_in">Sign In</string>
+    <string name="Continue_with_facebook">Continue with Facebook</string>
+    <string name="Sign_up">Sign Up</string>
+    <string name="Signing_In">Signing In...</string>
+
+    <!--Login page-->
+    <string name="phone_no_hint">Phone Number</string>
+    <string name="password_hint">Password</string>
+
+</resources>

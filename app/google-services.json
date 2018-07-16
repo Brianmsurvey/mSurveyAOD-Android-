@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "536466587454",
+    "firebase_url": "https://msurvey-project-m-8b21b.firebaseio.com",
+    "project_id": "msurvey-project-m-8b21b",
+    "storage_bucket": "msurvey-project-m-8b21b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536466587454:android:ef7b4ba03a7c9ead",
+        "android_client_info": {
+          "package_name": "com.msurvey.projectm.msurveyaod"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "536466587454-07070j30d1r47c5ufl0fu9dkgepahu95.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpTsHH4GsmRkRZNz7HXizCOgqg6hBxwo0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536466587454:android:cee57c54925ba459",
+        "android_client_info": {
+          "package_name": "com.msurvey.projectm.msurveyprojectm.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "536466587454-07070j30d1r47c5ufl0fu9dkgepahu95.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpTsHH4GsmRkRZNz7HXizCOgqg6hBxwo0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?android:attr/selectableItemBackground"
+    android:paddingStart="16dp"
+    android:paddingEnd="8dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/civ_survey_avatar"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:src="@drawable/circle" />
+
+    <TextView
+        android:id="@+id/tv_survey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="@dimen/md_keylines"
+        android:layout_toEndOf="@+id/civ_survey_avatar"
+        tools:text="@string/cashvsdebitcards"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="@dimen/article_subheading"
+        android:gravity="left"/>
+
+    <TextView
+        android:id="@+id/tv_questions_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="56dp"
+        android:layout_below="@+id/tv_survey"
+        android:layout_marginLeft="@dimen/md_keylines"
+        android:layout_toRightOf="@+id/civ_survey_avatar"
+        android:textColor="@color/colorReallyLightGrey"
+        android:ellipsize="end"
+        android:singleLine="true"
+        tools:text="@string/fivequestions"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="@dimen/list_body" />
+    
+
+</RelativeLayout>

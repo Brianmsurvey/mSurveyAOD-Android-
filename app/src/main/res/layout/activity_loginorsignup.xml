@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_signing_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/Signing_In"
+        android:textSize="20sp"
+        android:visibility="gone"
+        android:layout_marginBottom="48dp"/>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        style="@style/Widget.AppCompat.ProgressBar" />
+
+    <LinearLayout
+
+        android:id="@+id/layout_rest"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <ImageView
+            android:layout_width="156dp"
+            android:layout_height="156dp"
+            android:src="@drawable/msurveylogoblue"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="116dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/colorReallyLightGrey"
+            android:text="@string/msurvey_motto"
+            android:visibility="invisible"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="72dp"
+            android:gravity="center">
+
+
+            <!--<com.facebook.login.widget.LoginButton-->
+                <!--android:id="@+id/login_button"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginTop="30dp"-->
+                <!--android:layout_marginStart="72dp"-->
+                <!--android:layout_marginEnd="72dp"-->
+                <!--android:stateListAnimator="@null"-->
+                <!--android:layout_marginBottom="30dp"-->
+                <!--android:background="@drawable/roundedbutton_white"-->
+                <!--style="@style/FacebookLoginButton"/>-->
+
+            <Button
+                android:id="@+id/login_button"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="72dp"
+                android:layout_marginRight="72dp"
+                android:layout_gravity="center"
+                android:stateListAnimator="@null"
+                android:text="@string/Loginwithfacebook"
+                android:textSize="14sp"
+                android:textColor="@color/colorPrimary"
+                android:background="@drawable/roundedbutton_white" />
+
+            <Button
+                android:id="@+id/btn_signup"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="72dp"
+                android:layout_marginRight="72dp"
+                android:layout_gravity="center"
+                android:stateListAnimator="@null"
+                android:text="@string/Loginwithnumber"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:background="@drawable/roundedbutton" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</FrameLayout>
