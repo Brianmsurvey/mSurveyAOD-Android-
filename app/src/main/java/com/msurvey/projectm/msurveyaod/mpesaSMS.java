@@ -16,11 +16,13 @@ public class mpesaSMS {
 
     private String transactionCost;
 
+    private String transactionType;
+
 
     public mpesaSMS(){};
 
     public mpesaSMS(String transactionId, String amountTransacted, String mpesaBalance, String cashReceiver, String transactionTime,
-                    String transactionDate, String transactionCost){
+                    String transactionDate, String transactionCost, String transactionType){
 
         this.transactionId = transactionId;
 
@@ -35,6 +37,8 @@ public class mpesaSMS {
         this.transactionDate = transactionDate;
 
         this.transactionCost = transactionCost;
+
+        this.transactionType = transactionType;
 
     }
 
@@ -67,6 +71,9 @@ public class mpesaSMS {
         return transactionCost;
     }
 
+    public String getTransactionType() {
+        return transactionType;
+    }
 
     public  void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
@@ -94,5 +101,9 @@ public class mpesaSMS {
 
     public  void setTransactionTime(String transactionTime) {
         this.transactionTime = transactionTime;
+    }
+
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
     }
 }

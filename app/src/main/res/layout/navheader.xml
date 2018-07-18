@@ -11,7 +11,7 @@
         android:layout_marginTop="40dp"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:src="@drawable/profilepic"/>
+        android:src="@drawable/avatarcircleblue"/>
 
     <TextView
         android:id="@+id/tv_user_name"
@@ -20,7 +20,7 @@
         android:layout_marginTop="16dp"
         android:layout_below="@+id/civ_user_image"
         android:textColor="@color/white"
-        tools:text="@string/dummy_user"
+        android:text="@string/dummy_user"
         android:textSize="@dimen/article_subheading"/>
 
     <TextView
@@ -30,6 +30,6 @@
         android:layout_marginTop="4dp"
         android:layout_below="@+id/tv_user_name"
         android:textColor="@color/white"
-        tools:text="@string/dummy_user_email"
+        android:text="@string/dummy_user_email"
         android:textSize="@dimen/list_body" />
 </RelativeLayout>

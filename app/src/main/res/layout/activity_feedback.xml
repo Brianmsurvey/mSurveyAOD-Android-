@@ -22,15 +22,15 @@
     </android.support.design.widget.AppBarLayout>
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/civ_store_avator"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center"
-        android:layout_centerInParent="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="96dp"
-        android:src="@drawable/profilepic"/>
+    <!--<de.hdodenhof.circleimageview.CircleImageView-->
+        <!--android:id="@+id/civ_store_avator"-->
+        <!--android:layout_width="60dp"-->
+        <!--android:layout_height="60dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_marginTop="96dp"-->
+        <!--android:src="@drawable/profilepic"/>-->
 
     <TextView
         android:id="@+id/store_name"
@@ -38,8 +38,8 @@
         android:text="@string/store_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/civ_store_avator"
-        android:layout_marginTop="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="96dp"
         android:layout_centerInParent="true"/>
 
     <TextView
@@ -62,61 +62,132 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/sent_time"/>
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/emojis"
         android:layout_width="match_parent"
         android:layout_height="72dp"
-        android:layout_marginTop="16dp"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:layout_below="@+id/rate">
 
         <ImageView
             android:id="@+id/angry"
             android:src="@drawable/angry"
-            android:layout_margin="12dp"
             android:layout_width="36dp"
             android:layout_height="36dp"
+            android:layout_marginTop="12dp"
             android:contentDescription="emoji"
+            android:background="?android:attr/selectableItemBackgroundBorderless"/>
+
+        <ImageView
+            android:id="@+id/iv_bluecircle_angry"
+            android:src="@drawable/circle"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="16dp"
+            android:contentDescription="emoji"
+            android:layout_below="@+id/angry"
+            android:visibility="invisible"
             android:background="?android:attr/selectableItemBackgroundBorderless"/>
 
         <ImageView
             android:id="@+id/sad"
             android:src="@drawable/sad"
-            android:layout_margin="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="64dp"
+            android:layout_alignStart="@+id/angry"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:contentDescription="emoji"
             android:background="?android:attr/selectableItemBackgroundBorderless"/>
 
         <ImageView
+            android:id="@+id/iv_bluecircle_sad"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="64dp"
+            android:layout_below="@+id/sad"
+            android:layout_alignStart="@+id/iv_bluecircle_angry"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="emoji"
+            android:visibility="invisible"
+            android:src="@drawable/circle" />
+
+        <ImageView
             android:id="@+id/neutral"
             android:src="@drawable/neutral"
-            android:layout_margin="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="128dp"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:contentDescription="emoji"
+            android:background="?android:attr/selectableItemBackgroundBorderless"/>
+
+        <ImageView
+            android:id="@+id/iv_bluecircle_neutral"
+            android:src="@drawable/circle"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="64dp"
+            android:layout_below="@+id/neutral"
+            android:layout_alignStart="@+id/iv_bluecircle_sad"
+            android:contentDescription="emoji"
+            android:visibility="invisible"
             android:background="?android:attr/selectableItemBackgroundBorderless"/>
 
         <ImageView
             android:id="@+id/happy"
             android:src="@drawable/happy"
-            android:layout_margin="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="192dp"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:contentDescription="emoji"
             android:background="?android:attr/selectableItemBackgroundBorderless"/>
 
         <ImageView
+            android:id="@+id/iv_bluecircle_happy"
+            android:src="@drawable/circle"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="64dp"
+            android:layout_alignStart="@+id/iv_bluecircle_neutral"
+            android:layout_below="@+id/happy"
+            android:contentDescription="emoji"
+            android:visibility="invisible"
+            android:background="?android:attr/selectableItemBackgroundBorderless"/>
+
+        <ImageView
             android:id="@+id/veryhappy"
             android:src="@drawable/veryhappy"
-            android:layout_margin="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="256dp"
             android:contentDescription="emoji"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:background="?android:attr/selectableItemBackgroundBorderless"/>
 
-    </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_bluecircle_veryhappy"
+            android:src="@drawable/circle"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="64dp"
+            android:layout_alignStart="@+id/iv_bluecircle_happy"
+            android:layout_below="@+id/veryhappy"
+            android:contentDescription="emoji"
+            android:visibility="invisible"
+            android:background="?android:attr/selectableItemBackgroundBorderless"/>
+
+    </RelativeLayout>
 
     <EditText
         android:id="@+id/etfeedback"

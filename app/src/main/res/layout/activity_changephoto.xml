@@ -15,7 +15,7 @@
         android:id="@+id/civ_taken_photo"
         android:layout_width="175dp"
         android:layout_height="175dp"
-        android:src="@drawable/profilepic"
+        android:src="@drawable/avatarcircleblue"
         android:layout_gravity="center|top"
         android:layout_marginTop="56dp"/>
 

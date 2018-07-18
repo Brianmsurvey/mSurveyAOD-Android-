@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.msurvey.projectm.msurveyaod.MainActivity;
 import com.msurvey.projectm.msurveyaod.R;
 import com.msurvey.projectm.msurveyaod.User;
+import com.msurvey.projectm.msurveyaod.mpesaSMS;
 
 import java.util.Random;
 
@@ -32,8 +33,6 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
     private String serviceProviderNumber;
 
     private String serviceProviderSmsCondition;
-
-    private Listener listener;
 
     //Firebase
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -87,14 +86,72 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
                     //Message that was received
                     String message = currentMessage.getDisplayMessageBody();
 
+                    String theSenderIs = "The sender is " + senderNum;
+                    Log.e(TAG, theSenderIs);
                     Log.e(TAG, message);
 
-                    //String notificationTitle = SmsUtils.returnSmsSender(message);
-                    String notificationTitle = "Java Coffee House";
-                    String howWasYourExperience = "How was your experience at " + notificationTitle + "?";
-                    Notification.Builder builder = helper.getChanelNotification(notificationTitle, howWasYourExperience);
-                    helper.getManager().notify(new Random().nextInt(), builder.build());
+                    //Parse message
+                    //See if Sender is MPESA
+                    //If it is, decompose the message to see who cash is being sent to
+                    //Push that information to an MPESA sms object
 
+                    if(senderNum.equals("MPESA")){
+
+                        //Checks to see if its a buy goods and services message
+                        if(!SmsUtils.returnCashReceiver(message).equals("nothing")){
+
+                            String CashReceiver = SmsUtils.returnCashReceiver(message);
+
+                            mpesaSMS mpesaSMS;
+                            mpesaSMS = SmsUtils.parseSms(message);
+                            mUserDatabase.child(NetworkUtils.getPhoneNumber().substring(1)).child("mpesaData").child(mpesaSMS.getTransactionId()).setValue(mpesaSMS);
+
+
+                            String transactionTime = SmsUtils.returnTransactionTime(message);
+                            String transactionDate = SmsUtils.returnTransactionDate(message);
+                            String transactionDateTime = DateUtils.returnFormalDate(transactionDate, transactionTime);
+
+                            FeedbackUtils.cashReceiver = CashReceiver;
+                            FeedbackUtils.transactionDate = transactionDate;
+                            FeedbackUtils.transactionTime = transactionTime;
+                            FeedbackUtils.transactionDateTime = transactionDateTime;
+
+                            String howWasYourExperience = "How was your experience at " + CashReceiver + "?";
+                            Notification.Builder builder = helper.getChanelNotification(CashReceiver, howWasYourExperience, transactionDateTime);
+                            helper.getManager().notify(new Random().nextInt(), builder.build());
+
+                            //Checks to see if its a paybill message
+                        }else if(!SmsUtils.returnPayBillCashReceiver(message).equals("nothing")){
+
+                            String CashReceiver = SmsUtils.returnPayBillCashReceiver(message);
+
+                            mpesaSMS mpesaSMS;
+                            mpesaSMS = SmsUtils.parsePaybillSms(message);
+                            mUserDatabase.child(NetworkUtils.getPhoneNumber().substring(1)).child("mpesaData")
+                                    .child(mpesaSMS.getTransactionId()).setValue(mpesaSMS);
+
+                            String transactionTime = SmsUtils.returnTransactionTime(message);
+                            String transactionDate = SmsUtils.returnTransactionDate(message);
+                            String transactionDateTime = DateUtils.returnFormalDate(transactionDate, transactionTime);
+
+                            FeedbackUtils.cashReceiver = CashReceiver;
+                            FeedbackUtils.transactionDate = transactionDate;
+                            FeedbackUtils.transactionTime = transactionTime;
+                            FeedbackUtils.transactionDateTime = transactionDateTime;
+
+                            String howWasYourExperience = "How was your experience at " + CashReceiver + "?";
+                            Notification.Builder builder = helper.getChanelNotification(CashReceiver, howWasYourExperience, transactionDateTime);
+                            helper.getManager().notify(new Random().nextInt(), builder.build());
+
+                            //Checks to see if its a P2P mpesa message
+                        }else if (!SmsUtils.returnP2PCashReceiver(message).equals("nothing")){
+
+                            mpesaSMS mpesaSMS;
+                            mpesaSMS = SmsUtils.parseP2PSms(message);
+                            mUserDatabase.child(NetworkUtils.getPhoneNumber().substring(1)).child("mpesaData")
+                                    .child(mpesaSMS.getTransactionId()).setValue(mpesaSMS);
+                        }
+                    }
 
                 }
             }
@@ -104,25 +161,5 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
         }
     }
 
-    void setListener(Listener listener){
-        this.listener = listener;
-    }
 
-    interface Listener{
-        void onTextReceived(String text);
-    }
-
-    private void addNotification(Context context) {
-        NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.ic_launcher_background)
-                        .setContentTitle("Notifications Example")
-                        .setContentText("This is a test notification");
-
-
-
-        // Add as notification
-        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(0, builder.build());
-    }
 }

@@ -11,6 +11,8 @@ public class User {
 
     private String name;
 
+    private String phoneNumber;
+
     private Map<String, mpesaSMS> mPesaData;
 
     public User(){
@@ -18,15 +20,21 @@ public class User {
         this.mPesaData = new HashMap<>();
     }
 
-    public User(String name, Map<String, mpesaSMS> mpesadata){
+    public User(String phoneNumber, Map<String, mpesaSMS> mpesadata){
 
-        this.name = name;
+        this.phoneNumber = phoneNumber;
 
         this.mPesaData = mpesadata;
 
     }
 
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
     public String getName() {
         return name;
@@ -42,5 +50,10 @@ public class User {
 
     public void setmPesaData(Map<String, mpesaSMS> mPesaData) {
         this.mPesaData = mPesaData;
+    }
+
+    public void addMpesaSmsTomPesaData(mpesaSMS mpesaSMS){
+
+        this.mPesaData.put(mpesaSMS.getTransactionId(), mpesaSMS);
     }
 }

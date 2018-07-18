@@ -70,7 +70,7 @@ public class SplashActivity extends AppCompatActivity {
 
                             //We're assuming this person already has an AOD profile
                             //We get their phone number and then set the current db url accordingly.
-                            NetworkUtils.setCurrent_db_url("254713740504");
+                            NetworkUtils.setCurrent_db_url(NetworkUtils.getPhoneNumber());
 
                             new ProfileAsyncTask().execute(NetworkUtils.getCurrent_db_url());
 

@@ -15,7 +15,7 @@ import com.msurvey.projectm.msurveyaod.R;
 
 public class NotificationHelper extends ContextWrapper {
 
-    private static final String CHANNEL_ID = "com.msurvey.projectm.msurveyprojectm.instantapp.Utilities";
+    private static final String CHANNEL_ID = "com.msurvey.projectm.msurveyaod.Utilities";
     private static final String CHANEL_NAME = "mSurveyChannel";
     private NotificationManager manager;
 
@@ -55,7 +55,7 @@ public class NotificationHelper extends ContextWrapper {
         return manager;
     }
 
-    public Notification.Builder getChanelNotification(String title, String body){
+    public Notification.Builder getChanelNotification(String title, String body, String extra){
 
         Intent intent = new Intent(getApplicationContext(), FeedbackActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

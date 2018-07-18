@@ -140,7 +140,8 @@ public class SmsUtils {
 
     }
 
-    public static mpesaSMS parseSms(User user, String message){
+    //Default buy goods and services
+    public static mpesaSMS parseSms(String message){
 
         mpesaSMS mpesaSMS = new mpesaSMS();
 
@@ -160,14 +161,97 @@ public class SmsUtils {
 
         mpesaSMS.setTransactionCost(cost.substring(3));
 
+        mpesaSMS.setTransactionType(MpesaUtils.buygoodsandservices);
+
         return mpesaSMS;
 
     }
 
-    public static String returnSmsSender(String message) {
+    //Parse paybill mpesa sms
+    public static mpesaSMS parsePaybillSms(String message){
+
+        mpesaSMS mpesaSMS = new mpesaSMS();
+
+        mpesaSMS.setTransactionId(StringUtils.regexChecker(message, MpesaUtils.transactionIdRegex));
+
+        mpesaSMS.setAmountTransacted(StringUtils.regexChecker(message, MpesaUtils.amountTransactionRegex));
+
+        mpesaSMS.setMpesaBalance(StringUtils.regexChecker(message, MpesaUtils.mpesaBalanceRegex));
+
+        mpesaSMS.setCashReceiver(StringUtils.regexChecker(message, MpesaUtils.paybillCashReceiverRegex));
+
+        mpesaSMS.setTransactionTime(StringUtils.regexChecker(message, MpesaUtils.transactionTimeRegex));
+
+        mpesaSMS.setTransactionDate(StringUtils.regexChecker(message, MpesaUtils.transactionDateRegex));
+
+        String cost = StringUtils.regexChecker(message, MpesaUtils.transactionCostRegex);
+
+        mpesaSMS.setTransactionCost(cost.substring(3));
+
+        mpesaSMS.setTransactionType(MpesaUtils.paybill);
+
+        return mpesaSMS;
+
+    }
+
+    //Parse paybill mpesa sms
+    public static mpesaSMS parseP2PSms(String message){
+
+        mpesaSMS mpesaSMS = new mpesaSMS();
+
+        mpesaSMS.setTransactionId(StringUtils.regexChecker(message, MpesaUtils.transactionIdRegex));
+
+        mpesaSMS.setAmountTransacted(StringUtils.regexChecker(message, MpesaUtils.amountTransactionRegex));
+
+        mpesaSMS.setMpesaBalance(StringUtils.regexChecker(message, MpesaUtils.mpesaBalanceRegex));
+
+        mpesaSMS.setCashReceiver(StringUtils.regexChecker(message, MpesaUtils.p2pCashReceiverRegex));
+
+        mpesaSMS.setTransactionTime(StringUtils.regexChecker(message, MpesaUtils.transactionTimeRegex));
+
+        mpesaSMS.setTransactionDate(StringUtils.regexChecker(message, MpesaUtils.transactionDateRegex));
+
+        String cost = StringUtils.regexChecker(message, MpesaUtils.transactionCostRegex);
+
+        mpesaSMS.setTransactionCost(cost.substring(3));
+
+        mpesaSMS.setTransactionType(MpesaUtils.buygoodsandservices);
+
+
+        return mpesaSMS;
+
+    }
+
+    //Buy goods and services
+    public static String returnCashReceiver(String message) {
 
         return StringUtils.regexChecker(message, MpesaUtils.cashReceiverRegex);
 
+    }
+
+    //Paybill
+    public static String returnPayBillCashReceiver(String message) {
+
+        return StringUtils.regexChecker(message, MpesaUtils.paybillCashReceiverRegex);
+
+    }
+
+    public static String returnP2PCashReceiver(String message) {
+
+        return StringUtils.regexChecker(message, MpesaUtils.p2pCashReceiverRegex);
+
+    }
+
+
+
+    public static String returnTransactionTime(String message){
+
+        return StringUtils.regexChecker(message, MpesaUtils.transactionTimeRegex);
+    }
+
+    public static String returnTransactionDate(String message){
+
+        return StringUtils.regexChecker(message, MpesaUtils.transactionDateRegex);
     }
 
 }

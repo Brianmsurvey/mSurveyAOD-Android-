@@ -9,7 +9,7 @@
     <string name="amount_earned">AMOUNT EARNED</string>
     <string name="questions_completed">QUESTIONS COMPLETED</string>
     <string name="surveys_completed">SURVEYS COMPLETED</string>
-    <string name="amount_earned_no">140</string>
+    <string name="amount_earned_no">-</string>
     <string name="questions_completed_no">23</string>
     <string name="airtime_earned_cash">3,245</string>
     <string name="ksh">KSH</string>

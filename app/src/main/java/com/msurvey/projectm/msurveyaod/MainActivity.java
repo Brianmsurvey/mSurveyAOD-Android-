@@ -40,8 +40,11 @@ import com.facebook.accountkit.AccountKit;
 import com.facebook.accountkit.AccountKitCallback;
 import com.facebook.accountkit.AccountKitError;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.msurvey.projectm.msurveyaod.Utilities.DateUtils;
 import com.msurvey.projectm.msurveyaod.Utilities.HTTPDataHandler;
 import com.msurvey.projectm.msurveyaod.Utilities.MpesaUtils;
 import com.msurvey.projectm.msurveyaod.Utilities.SmsBroadCastReceiver;
@@ -51,6 +54,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
         // Adding Toolbar to Main screen
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
         String messagen = "The message arrived : " + getIntent().getExtras().getString("airtime");
 
@@ -156,23 +162,28 @@ public class MainActivity extends AppCompatActivity {
 
         }else{
 
-            scrapeMpesaSms();
-
-            User user = new User();
-
-            user.setName("Test User");
-
-            SmsUtils.parseSms(user, SmsUtils.scrapeMpesaSms(this));
-
-
-            mUserDatabase.push().setValue(user);
+//            scrapeMpesaSms();
+//
+//            User user = new User();
+//
+//            user.setName("Test User");
+//
+//            SmsUtils.parseSms(user, SmsUtils.scrapeMpesaSms(this));
+//
+//
+//            mUserDatabase.push().setValue(user);
 
 //            LogSampleMpesaSms();
 
-            mSmsReceiver = new SmsBroadCastReceiver();
 
-            registerReceiver(mSmsReceiver, new IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION));
+
+            //registerReceiver(mSmsReceiver, new IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION));
         }
+
+
+
+        mSmsReceiver = new SmsBroadCastReceiver();
+        registerReceiver(mSmsReceiver, new IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION));
 
 
         // Set behavior of Navigation drawer
@@ -236,9 +247,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        try{
+
+            unregisterReceiver(mSmsReceiver);
+
+        }catch (IllegalArgumentException e){
+            Log.e(TAG, "");
+        }
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
-        //unregisterReceiver(mSmsReceiver);
+        try{
+
+            unregisterReceiver(mSmsReceiver);
+
+        }catch (IllegalArgumentException e){
+            Log.e(TAG, "");
+        }
+
     }
 
     // Add Fragments to Tabs
@@ -296,8 +326,14 @@ public class MainActivity extends AppCompatActivity {
 
         if(id == R.id.item_logout){
             AccountKit.logOut();
+            if(FirebaseAuth.getInstance() != null){
+                FirebaseAuth.getInstance().signOut();
+            }
+
             Intent loginorsigninIntent = new Intent(this, LoginOrSignUpActivity.class);
             startActivity(loginorsigninIntent);
+
+            unregisterReceiver(mSmsReceiver);
 
             finish();
         }
@@ -486,7 +522,7 @@ public class MainActivity extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the
 
-                    scrapeMpesaSms();
+                    //scrapeMpesaSms();
 
                 } else {
                     // permission denied, boo! Disable the

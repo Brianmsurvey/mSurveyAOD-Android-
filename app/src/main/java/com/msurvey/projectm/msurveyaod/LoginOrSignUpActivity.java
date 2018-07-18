@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,8 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.accountkit.Account;
 import com.facebook.accountkit.AccountKit;
 import com.facebook.accountkit.AccountKitCallback;
@@ -33,6 +36,13 @@ import com.facebook.accountkit.ui.LoginType;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.msurvey.projectm.msurveyaod.Utilities.HTTPDataHandler;
 import com.msurvey.projectm.msurveyaod.Utilities.NetworkUtils;
 
@@ -50,6 +60,11 @@ public class LoginOrSignUpActivity extends AppCompatActivity {
     private static final String TAG = "Log in says this: ";
 
     private final static int REQUEST_CODE = 999;
+
+    private FirebaseAuth mAuth;
+
+    private FirebaseDatabase database;
+    private DatabaseReference mUserDatabase;
 
     Button signup, loginButton;
 
@@ -72,6 +87,12 @@ public class LoginOrSignUpActivity extends AppCompatActivity {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
+        mAuth = FirebaseAuth.getInstance();
+
+        database = FirebaseDatabase.getInstance();
+        mUserDatabase = database.getReference("Users");
+
+
 
         loginButton = findViewById(R.id.login_button);
         //loginButton.setReadPermissions(Arrays.asList(EMAIL));
@@ -91,6 +112,22 @@ public class LoginOrSignUpActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 // App code
+
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+
+                                try {
+                                    String email = object.getString("email");
+                                    String birthday = object.getString("birthday");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
 
                 NetworkUtils.setPhoneNumber("254713740504");
                 new ProfileAsyncTask().execute(NetworkUtils.getTestUrl());
@@ -146,7 +183,8 @@ public class LoginOrSignUpActivity extends AppCompatActivity {
 
 
 
-                LoginManager.getInstance().logInWithReadPermissions(LoginOrSignUpActivity.this, Arrays.asList("public_profile"));
+                LoginManager.getInstance().logInWithReadPermissions(LoginOrSignUpActivity.this, Arrays.asList("public_profile", "email", "user_birthday",
+                        "user_friends", "user_gender", "user_likes"));
 
             }
         });
@@ -293,7 +331,19 @@ public class LoginOrSignUpActivity extends AppCompatActivity {
             }else{
 
                 if(result.getAccessToken() != null){
-                    Toast.makeText(this, "Success  !  %s" + result.getAccessToken().getAccountId(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "Success  !  %s" + result.getAccessToken().getAccountId(), Toast.LENGTH_SHORT).show();
+
+                    mAuth.signInWithCustomToken(result.getAccessToken().toString())
+                            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                    if(task.isSuccessful()){
+
+                                    }
+
+                                }
+                            });
 
                     com.facebook.accountkit.AccessToken accessToken = AccountKit.getCurrentAccessToken();
 
@@ -307,12 +357,19 @@ public class LoginOrSignUpActivity extends AppCompatActivity {
                                 // Get phone number
                                 PhoneNumber phoneNumber = account.getPhoneNumber();
                                 if (phoneNumber != null) {
+
                                     String phoneNumberString = phoneNumber.toString().substring(1);
+
+                                    User user = new User();
+                                    user.setPhoneNumber(phoneNumberString);
+                                    mUserDatabase.child(phoneNumberString).setValue(user);
+
+
                                     NetworkUtils.setPhoneNumber(phoneNumberString);
-                                    Log.e(TAG, phoneNumberString);
+                                    //Log.e(TAG, phoneNumberString);
                                     NetworkUtils.setCurrent_db_url(phoneNumberString);
 
-                                    new ProfileAsyncTask().execute(NetworkUtils.getTestUrl());
+                                    new ProfileAsyncTask().execute(NetworkUtils.getCurrent_db_url());
                                 }
 
                             }
