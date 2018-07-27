@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Telephony;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -15,10 +16,16 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.facebook.accountkit.Account;
+import com.facebook.accountkit.AccountKit;
+import com.facebook.accountkit.AccountKitCallback;
+import com.facebook.accountkit.AccountKitError;
+import com.facebook.accountkit.PhoneNumber;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.msurvey.projectm.msurveyaod.MainActivity;
 import com.msurvey.projectm.msurveyaod.R;
+import com.msurvey.projectm.msurveyaod.SplashActivity;
 import com.msurvey.projectm.msurveyaod.User;
 import com.msurvey.projectm.msurveyaod.mpesaSMS;
 
@@ -35,8 +42,8 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
     private String serviceProviderSmsCondition;
 
     //Firebase
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference mUserDatabase = database.getReference("Users");
+    private FirebaseDatabase database;
+    private DatabaseReference mUserDatabase;
 
     public SmsBroadCastReceiver(String serviceProviderNumber, String serviceProviderSmsCondition){
         this.serviceProviderNumber = serviceProviderNumber;
@@ -58,6 +65,42 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
         sb.append("URI: " + intent.toUri(Intent.URI_INTENT_SCHEME));
 
         String log = sb.toString();
+
+        database = FirebaseDatabase.getInstance();
+
+        mUserDatabase = database.getReference("Users");
+        mUserDatabase.keepSynced(true);
+
+        com.facebook.accountkit.AccessToken accessToken = AccountKit.getCurrentAccessToken();
+
+        //If this user has an account
+        if (accessToken != null) {
+
+
+            AccountKit.getCurrentAccount(new AccountKitCallback<Account>() {
+                @Override
+                public void onSuccess(final Account account) {
+                    // Get Account Kit ID
+                    String accountKitId = account.getId();
+
+                    // Get phone number
+                    PhoneNumber phoneNumber = account.getPhoneNumber();
+                    if (phoneNumber != null) {
+                        String phoneNumberString = phoneNumber.toString().replace("+", "");
+                        NetworkUtils.setPhoneNumber(phoneNumberString);
+                    }
+                }
+
+                @Override
+                public void onError(final AccountKitError error) {
+                    // Handle Error
+                    Log.e(TAG, error.toString());
+
+
+                }
+
+            });
+        }
 
 
         helper = new NotificationHelper(context);
@@ -87,38 +130,73 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
                     String message = currentMessage.getDisplayMessageBody();
 
                     String theSenderIs = "The sender is " + senderNum;
-                    Log.e(TAG, theSenderIs);
-                    Log.e(TAG, message);
+//                    Log.e(TAG, theSenderIs);
+//                    Log.e(TAG, message);
 
                     //Parse message
                     //See if Sender is MPESA
                     //If it is, decompose the message to see who cash is being sent to
                     //Push that information to an MPESA sms object
 
+
                     if(senderNum.equals("MPESA")){
+
+                        //If this user has an account
+                        if (accessToken != null) {
+
+
+                            AccountKit.getCurrentAccount(new AccountKitCallback<Account>() {
+                                @Override
+                                public void onSuccess(final Account account) {
+                                    // Get Account Kit ID
+                                    String accountKitId = account.getId();
+
+                                    // Get phone number
+                                    PhoneNumber phoneNumber = account.getPhoneNumber();
+                                    if (phoneNumber != null) {
+                                        String phoneNumberString = phoneNumber.toString().replace("+", "");
+                                        NetworkUtils.setPhoneNumber(phoneNumberString);
+                                    }
+                                }
+
+                                @Override
+                                public void onError(final AccountKitError error) {
+                                    // Handle Error
+                                    Log.e(TAG, error.toString());
+
+
+                                }
+
+                            });
+                        }
+
+                        String userNumber = NetworkUtils.getPhoneNumber().replace("+", "");
 
                         //Checks to see if its a buy goods and services message
                         if(!SmsUtils.returnCashReceiver(message).equals("nothing")){
 
-                            String CashReceiver = SmsUtils.returnCashReceiver(message);
+                            final String CashReceiver = SmsUtils.returnCashReceiver(message);
 
                             mpesaSMS mpesaSMS;
                             mpesaSMS = SmsUtils.parseSms(message);
-                            mUserDatabase.child(NetworkUtils.getPhoneNumber().substring(1)).child("mpesaData").child(mpesaSMS.getTransactionId()).setValue(mpesaSMS);
+                            mUserDatabase.child(userNumber).child("mpesaData").child(mpesaSMS.getTransactionId()).setValue(mpesaSMS);
 
 
                             String transactionTime = SmsUtils.returnTransactionTime(message);
                             String transactionDate = SmsUtils.returnTransactionDate(message);
-                            String transactionDateTime = DateUtils.returnFormalDate(transactionDate, transactionTime);
+                            final String transactionDateTime = DateUtils.returnFormalDate(transactionDate, transactionTime);
 
                             FeedbackUtils.cashReceiver = CashReceiver;
                             FeedbackUtils.transactionDate = transactionDate;
                             FeedbackUtils.transactionTime = transactionTime;
                             FeedbackUtils.transactionDateTime = transactionDateTime;
 
-                            String howWasYourExperience = "How was your experience at " + CashReceiver + "?";
+                            final String howWasYourExperience = "How was your experience at " + CashReceiver + "?";
+
+
                             Notification.Builder builder = helper.getChanelNotification(CashReceiver, howWasYourExperience, transactionDateTime);
                             helper.getManager().notify(new Random().nextInt(), builder.build());
+
 
                             //Checks to see if its a paybill message
                         }else if(!SmsUtils.returnPayBillCashReceiver(message).equals("nothing")){
@@ -127,7 +205,7 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
 
                             mpesaSMS mpesaSMS;
                             mpesaSMS = SmsUtils.parsePaybillSms(message);
-                            mUserDatabase.child(NetworkUtils.getPhoneNumber().substring(1)).child("mpesaData")
+                            mUserDatabase.child(userNumber.replace("+", "")).child("mpesaData")
                                     .child(mpesaSMS.getTransactionId()).setValue(mpesaSMS);
 
                             String transactionTime = SmsUtils.returnTransactionTime(message);
@@ -148,7 +226,7 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
 
                             mpesaSMS mpesaSMS;
                             mpesaSMS = SmsUtils.parseP2PSms(message);
-                            mUserDatabase.child(NetworkUtils.getPhoneNumber().substring(1)).child("mpesaData")
+                            mUserDatabase.child(userNumber).child("mpesaData")
                                     .child(mpesaSMS.getTransactionId()).setValue(mpesaSMS);
                         }
                     }

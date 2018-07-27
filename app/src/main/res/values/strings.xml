@@ -39,6 +39,9 @@
     <string name="Loginwithfacebook">Login with Facebook</string>
     <string name="LogOut">Log Out</string>
 
+    <!--Empty states-->
+    <string name="nointernet">No Internet Connection.\nTry again later</string>
+
     <!--Emoji Responses-->
     <string name="veryhappy">Excellent</string>
     <string name="happy">Good</string>
@@ -64,8 +67,8 @@
     <string name="item_profile">Profile</string>
 
     <!--dummy user-->
-    <string name="dummy_user">Brian Ngugi</string>
-    <string name="dummy_user_email">brian.ngugi@msurvey.co</string>
+    <string name="dummy_user"> </string>
+    <string name="dummy_user_email"> </string>
 
     <string name="changephoto">Change Photo</string>
 

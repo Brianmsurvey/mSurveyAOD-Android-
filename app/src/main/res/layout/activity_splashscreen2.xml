@@ -5,12 +5,27 @@
     android:background="@drawable/gradient_background"
     android:gravity="center">
 
-    <ImageView
-        android:layout_width="228dp"
-        android:layout_height="228dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="72dp"
-        android:src="@drawable/msurvey_logo_white"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="228dp"
+            android:layout_height="228dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="72dp"
+            android:src="@drawable/msurvey_logo_white"/>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_marginTop="144dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="center"
+            style="@style/CircularProgress" />
+
+    </FrameLayout>
+
+
 
 </RelativeLayout>

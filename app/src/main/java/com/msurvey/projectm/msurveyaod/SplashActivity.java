@@ -1,12 +1,17 @@
 package com.msurvey.projectm.msurveyaod;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.facebook.accountkit.Account;
 import com.facebook.accountkit.AccountKit;
@@ -29,6 +34,8 @@ public class SplashActivity extends AppCompatActivity {
 
     private final String TAG = "SplashActivity";
 
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +43,20 @@ public class SplashActivity extends AppCompatActivity {
         Log.e(TAG, "We here now");
 
         setContentView(R.layout.activity_splashscreen2);
+
+        progressBar = findViewById(R.id.progress_bar);
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        if (!isConnected){
+
+            Intent noInternetIntent = new Intent(SplashActivity.this, EmptyStateActivity.class);
+            startActivity(noInternetIntent);
+            finish();
+        }
 
         final SharedPreferences preferences = getSharedPreferences("my_preferences", MODE_PRIVATE);
         final String onboardingComplete = "onboarding_complete";
@@ -115,7 +136,7 @@ public class SplashActivity extends AppCompatActivity {
             super.onPreExecute();
 
 //            SigningIn.setVisibility(View.VISIBLE);
-//            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
 //            layoutRest.setVisibility(View.INVISIBLE);
 
         }
@@ -201,14 +222,14 @@ public class SplashActivity extends AppCompatActivity {
                     NetworkUtils.setSurveysCompletedNo(String.valueOf(incentivesNo));
 
 
-
+                    progressBar.setVisibility(View.INVISIBLE);
 
                     Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
                     startActivity(mainIntent);
                     finish();
 
 //                    SigningIn.setVisibility(View.INVISIBLE);
-//                    progressBar.setVisibility(View.INVISIBLE);
+
 //                    layoutRest.setVisibility(View.VISIBLE);
 
                 }

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="?android:attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <EditText
+        android:id="@+id/et_appfeedback"
+        android:layout_marginTop="96dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:hint="Let us know what you think"
+        android:inputType="textMultiLine" />
+
+    <ImageView
+        android:id="@+id/iv_successicon"
+        android:layout_marginTop="36dp"
+        android:layout_width="112dp"
+        android:layout_height="112dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/success"
+        android:visibility="gone"
+        android:contentDescription="@string/tellussomething"
+        android:layout_below="@+id/et_appfeedback"/>
+
+    <TextView
+        android:id="@+id/tv_thankyou"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:visibility="gone"
+        android:text="Thank You!"
+        android:layout_below="@+id/iv_successicon"/>
+
+    <Button
+        android:id="@+id/btn_submitFeedback"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:text="@string/submit_btn"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+</RelativeLayout>

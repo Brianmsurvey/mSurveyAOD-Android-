@@ -54,6 +54,7 @@ public class FeedbackActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feedback);
 
         mFeedbackDatabase = FirebaseDatabase.getInstance().getReference().child("CustomerFeedback");
+        mFeedbackDatabase.keepSynced(true);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

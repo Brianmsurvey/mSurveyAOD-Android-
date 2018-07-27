@@ -47,6 +47,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.msurvey.projectm.msurveyaod.Utilities.DateUtils;
 import com.msurvey.projectm.msurveyaod.Utilities.HTTPDataHandler;
 import com.msurvey.projectm.msurveyaod.Utilities.MpesaUtils;
+import com.msurvey.projectm.msurveyaod.Utilities.NetworkUtils;
 import com.msurvey.projectm.msurveyaod.Utilities.SmsBroadCastReceiver;
 import com.msurvey.projectm.msurveyaod.Utilities.SmsUtils;
 
@@ -70,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
     private CircleImageView mAvator;
     private Profile profile;
     private SmsBroadCastReceiver mSmsReceiver;
+
+    private TextView user_email;
+    private TextView user_name;
 
     private String accountEmail;
     private String accountId;
@@ -107,15 +111,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-
-        String messagen = "The message arrived : " + getIntent().getExtras().getString("airtime");
-
-        fragment_profile f = new fragment_profile();
-        Bundle bundle = new Bundle();
-        bundle.putString("some", messagen);
-        f.setArguments(bundle);
-
-        Log.e(TAG, messagen);
 
         // Setting ViewPager for each Tabs
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -160,30 +155,8 @@ public class MainActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.READ_SMS},
                     MY_PERMISSIONS_REQUEST_READ_SMS);
 
-        }else{
-
-//            scrapeMpesaSms();
-//
-//            User user = new User();
-//
-//            user.setName("Test User");
-//
-//            SmsUtils.parseSms(user, SmsUtils.scrapeMpesaSms(this));
-//
-//
-//            mUserDatabase.push().setValue(user);
-
-//            LogSampleMpesaSms();
-
-
-
-            //registerReceiver(mSmsReceiver, new IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION));
         }
 
-
-
-        mSmsReceiver = new SmsBroadCastReceiver();
-        registerReceiver(mSmsReceiver, new IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION));
 
 
         // Set behavior of Navigation drawer
@@ -205,6 +178,11 @@ public class MainActivity extends AppCompatActivity {
                         else if(id == R.id.item_about_msurvey){
 
                             return true;
+                        }else if(id == R.id.item_got_suggestions){
+
+                            Intent feedbackIntent = new Intent(MainActivity.this, AppFeedbackActivity.class);
+                            startActivity(feedbackIntent);
+                            return true;
                         }
 
                         // Closing drawer on item click
@@ -221,6 +199,12 @@ public class MainActivity extends AppCompatActivity {
                         Snackbar.LENGTH_LONG).show();
             }
         });
+
+
+        user_name = findViewById(R.id.tv_user_name);
+        user_email = findViewById(R.id.tv_user_email);
+
+        //user_email.setText(NetworkUtils.getPhoneNumber());
 
     }
 
@@ -535,24 +519,6 @@ public class MainActivity extends AppCompatActivity {
             // other 'case' lines to check for other
             // permissions this app might request.
         }
-    }
-
-    public void LogSampleMpesaSms(){
-
-        Log.e(TAG, MpesaUtils.transactionId);
-
-        Log.e(TAG, MpesaUtils.amountTransacted);
-
-        Log.e(TAG, MpesaUtils.mpesaBalance);
-
-        Log.e(TAG, MpesaUtils.cashReceiver);
-
-        Log.e(TAG, MpesaUtils.transactionTime);
-
-        Log.e(TAG, MpesaUtils.transactionDate);
-
-        Log.e(TAG, MpesaUtils.transactionCost);
-
     }
 
 

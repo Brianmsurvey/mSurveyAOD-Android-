@@ -13,5 +13,10 @@
             android:title="@string/about_msurvey"
             app:showAsAction="ifRoom"/>
 
+        <item android:id="@+id/item_got_suggestions"
+            android:icon="@drawable/circle"
+            android:title="Send feedback"
+            app:showAsAction="ifRoom"/>
+
     </group>
 </menu>

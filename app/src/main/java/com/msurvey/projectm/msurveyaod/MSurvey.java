@@ -6,6 +6,7 @@ import android.provider.Telephony;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.firebase.database.FirebaseDatabase;
 import com.msurvey.projectm.msurveyaod.Utilities.SmsBroadCastReceiver;
 
 public class MSurvey extends Application {
@@ -18,7 +19,9 @@ public class MSurvey extends Application {
         super.onCreate();
 
         smsBroadCastReceiver = new SmsBroadCastReceiver();
-        registerReceiver(smsBroadCastReceiver, new IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION));
+        //registerReceiver(smsBroadCastReceiver, new IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION));
+
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
@@ -29,7 +32,7 @@ public class MSurvey extends Application {
     @Override
     public void onTerminate() {
 
-        unregisterReceiver(smsBroadCastReceiver);
+        //unregisterReceiver(smsBroadCastReceiver);
         super.onTerminate();
     }
 }
