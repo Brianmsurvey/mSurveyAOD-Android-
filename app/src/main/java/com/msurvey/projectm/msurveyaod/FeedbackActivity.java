@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.msurvey.projectm.msurveyaod.Utilities.FeedbackUtils;
+import com.msurvey.projectm.msurveyaod.Utilities.SmsBroadCastReceiver;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -53,7 +54,7 @@ public class FeedbackActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_feedback);
 
-        mFeedbackDatabase = FirebaseDatabase.getInstance().getReference().child("CustomerFeedback");
+        mFeedbackDatabase = FirebaseDatabase.getInstance().getReference().child("TestCustomerFeedback");
         mFeedbackDatabase.keepSynced(true);
 
 
@@ -91,6 +92,7 @@ public class FeedbackActivity extends AppCompatActivity {
 
         mStoreTime.setText(FeedbackUtils.transactionDateTime);
 
+        Log.e(TAG, SmsBroadCastReceiver.userPhoneNumber);
 
         mVeryHappyEmoji.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,26 +184,24 @@ public class FeedbackActivity extends AppCompatActivity {
 
                 }else if(feedback.equals("")){
 
-                    Feedback newFeedback = new Feedback(emojiResponse, FeedbackUtils.transactionDate, FeedbackUtils.transactionTime);
+                    Feedback newFeedback = new Feedback(emojiResponse, FeedbackUtils.transactionDate, FeedbackUtils.transactionTime, FeedbackUtils.merchantName, SmsBroadCastReceiver.userPhoneNumber);
 
                     mFeedback.setText("");
 
-                    mFeedbackDatabase.child(FeedbackUtils.cashReceiver).child(FeedbackUtils.transactionDate).push().setValue(newFeedback);
+                    mFeedbackDatabase.push().setValue(newFeedback);
+
+                    //mFeedbackDatabase.child(FeedbackUtils.cashReceiver).child(FeedbackUtils.transactionDate).push().setValue(newFeedback);
 
                     Intent successIntent = new Intent(FeedbackActivity.this, SuccessActivity.class);
                     startActivity(successIntent);
                     finish();
 
                 }else{
-                    Feedback newFeedback = new Feedback(emojiResponse, feedback, FeedbackUtils.transactionDate, FeedbackUtils.transactionTime);
+                    Feedback newFeedback = new Feedback(emojiResponse, FeedbackUtils.transactionDate, FeedbackUtils.transactionTime, FeedbackUtils.merchantName, SmsBroadCastReceiver.userPhoneNumber);
 
                     mFeedback.setText("");
 
-                    String cashReceiverEncoded = FeedbackUtils.cashReceiver.replace(".", "");
-
-                    String transactionDateEncoded = FeedbackUtils.transactionDate.replace("/", "-");
-
-                    mFeedbackDatabase.child(cashReceiverEncoded).child(transactionDateEncoded).push().setValue(newFeedback);
+                    mFeedbackDatabase.push().setValue(newFeedback);
 
                     Intent successIntent = new Intent(FeedbackActivity.this, SuccessActivity.class);
                     startActivity(successIntent);

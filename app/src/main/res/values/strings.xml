@@ -4,7 +4,7 @@
     <string name="frag3title">Cashbacks</string>
 
     <!--Profile-->
-    <string name="airtime_earned">AIRTIME EARNED</string>
+    <string name="airtime_earned">Airtime Earned</string>
     <string name="this_month">This Month</string>
     <string name="amount_earned">AMOUNT EARNED</string>
     <string name="questions_completed">QUESTIONS COMPLETED</string>
@@ -15,6 +15,15 @@
     <string name="ksh">KSH</string>
     <string name="msurvey_name">mSurvey</string>
     <string name="msurvey_motto">Real people. Real thoughts. \n Real time.</string>
+    <string name="basic_info">Basic Info</string>
+    <string name="age">Age</string>
+    <string name="age_no">28</string>
+    <string name="gender">Gender</string>
+    <string name="gender_selection">Male</string>
+    <string name="dob">Date of Birth</string>
+    <string name="dob_no">18/05/1992</string>
+    <string name="recent_activity">Recent Activity</string>
+
 
     <!--Mock Store -->
     <string name="store_name">Java Coffee House</string>

@@ -183,6 +183,15 @@ public class MainActivity extends AppCompatActivity {
                             Intent feedbackIntent = new Intent(MainActivity.this, AppFeedbackActivity.class);
                             startActivity(feedbackIntent);
                             return true;
+                        }else if(id == R.id.item_history){
+
+                            Intent historyIntent = new Intent(MainActivity.this, FeedbackHistoryTest.class);
+                            startActivity(historyIntent);
+                            return true;
+                        }else if(id == R.id.item_newdesign){
+                            Intent historyIntent = new Intent(MainActivity.this, BottomNavActivity.class);
+                            startActivity(historyIntent);
+                            return true;
                         }
 
                         // Closing drawer on item click

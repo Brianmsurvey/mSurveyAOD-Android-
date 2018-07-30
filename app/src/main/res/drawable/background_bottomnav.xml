@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--// res/drawable, to support devices lower then 21 API-->
+<!--<selector xmlns:android="http://schemas.android.com/apk/res/android">-->
+    <!--<item android:state_pressed="true" android:drawable="@color/colorPrimary"/>-->
+    <!--<item android:state_enabled="true" android:drawable="@color/colorPrimary"/>-->
+    <!--<item android:state_enabled="false" android:drawable="@color/colorReallyLightGrey"/>-->
+    <!--<item android:drawable="@android:color/transparent"/>-->
+<!--</selector>-->
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/colorPrimary" android:state_checked="true" android:drawable="@color/white"/>
+    <item android:color="@color/colorReallyLightGrey" android:state_checked="false" android:drawable="@color/white" />
+    <item android:state_pressed="true" android:drawable="@color/colorPrimary"/>
+</selector>

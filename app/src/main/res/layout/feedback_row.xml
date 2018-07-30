@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_merchant"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/avatarcircleblue" />
+
+    <TextView
+        android:id="@+id/tv_merchant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="@dimen/md_keylines"
+        android:layout_toEndOf="@+id/civ_merchant"
+        android:text="Merchant"
+        android:textAppearance="?android:attr/textAppearanceListItem"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tv_feedback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="56dp"
+        android:layout_marginTop="4dp"
+        android:layout_below="@+id/tv_merchant"
+        android:layout_marginStart="@dimen/md_keylines"
+        android:layout_toEndOf="@+id/civ_merchant"
+        android:textColor="#424242"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="The service was great!"
+        android:textAppearance="?android:attr/textAppearanceListItem"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/tv_feedback"
+        android:layout_marginStart="16dp"
+        android:layout_alignParentEnd="true"
+        android:textSize="12sp"
+        android:text="Wed, 19th Jun"
+        android:textColor="#b0b0b0"
+        android:textStyle="bold"
+        android:backgroundTint="@color/colorPrimary"
+        android:paddingStart="7dp"
+        android:paddingEnd="7dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="4dp" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/tv_feedback"
+        android:layout_below="@+id/tv_date"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="16dp"
+        android:layout_alignParentEnd="true"
+        android:textSize="12sp"
+        android:text="13:04pm"
+        android:textColor="#b0b0b0"
+        android:textStyle="bold"
+        android:backgroundTint="@color/colorPrimary"
+        android:paddingStart="7dp"
+        android:paddingEnd="7dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="4dp" />
+
+</RelativeLayout>

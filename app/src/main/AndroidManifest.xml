@@ -76,6 +76,10 @@
 
         <activity android:name=".SuccessActivity"/>
 
+        <activity android:name=".FeedbackHistoryTest"/>
+
+        <activity android:name=".BottomNavActivity"/>
+
         <activity android:name=".AppFeedbackActivity">
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"

@@ -9,4 +9,11 @@ public class FeedbackUtils {
     public static String transactionTime = "";
 
     public static String transactionDate = "";
+
+    public static String timeStamp = "";
+
+    public static String merchantName = "";
+
+    public static String userNumber = "";
+
 }

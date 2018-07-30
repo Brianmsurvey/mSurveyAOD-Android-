@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/section_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="172dp"
+        android:background="#2196F3">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_profile_avator"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/avatarcircleblue" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:text="Brian Ngugi"
+            android:layout_marginTop="32dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="56dp"
+            android:text="Nairobi, Kenya"/>
+
+    </FrameLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/airtime_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/section_avatar"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/airtime_earned_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/airtime_earned_cash"
+            android:textSize="36sp"
+            android:textColor="@color/colorLightGrey"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/airtime_earned_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/airtime_earned"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/airtime_layout"
+        android:textSize="9sp"
+        android:textColor="@color/colorPrimary"/>
+
+    <View
+        android:id="@+id/divider_one"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_marginTop="16dp"
+        android:background="#e7e7e7"
+        android:layout_below="@id/airtime_earned_title"/>
+
+    <RelativeLayout
+        android:id="@+id/basicinfo_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/divider_one"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp">
+
+        <TextView
+            android:id="@+id/tv_basicinfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/basic_info"
+            android:textSize="12sp"
+            android:textColor="@color/colorLightGrey"/>
+
+        <TextView
+            android:id="@+id/tv_age_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="48dp"
+            android:text="@string/age"
+            android:layout_below="@+id/tv_basicinfo"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="48dp"
+            android:text="@string/age_no"
+            android:layout_below="@+id/tv_age_title"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_gender_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/gender"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/tv_basicinfo"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_centerHorizontal="true"
+            android:text="@string/gender_selection"
+            android:layout_below="@+id/tv_age_title"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_dob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="24dp"
+            android:text="@string/dob"
+            android:layout_below="@+id/tv_basicinfo"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_dob_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/dob_no"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="24dp"
+            android:layout_below="@+id/tv_age_title"
+            android:textSize="12sp"/>
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/divider_two"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/basicinfo_layout"
+        android:background="#e7e7e7" />
+
+    <TextView
+        android:id="@+id/tv_recent_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/recent_activity"
+        android:layout_below="@+id/divider_two"
+        android:textSize="12sp"
+        android:textColor="@color/colorLightGrey"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_recent_activity"
+        android:layout_marginTop="16dp"/>
+
+</RelativeLayout>

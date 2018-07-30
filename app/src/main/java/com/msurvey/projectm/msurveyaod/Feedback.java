@@ -11,6 +11,12 @@ public class Feedback {
 
     private String transactionTime;
 
+    private String timeStamp;
+
+    private String merchantName;
+
+    private String userNumber;
+
 
     public Feedback(){};
 
@@ -25,13 +31,36 @@ public class Feedback {
         this.transactionTime = transactionTime;
     }
 
-    public Feedback(String ovrResponse, String transactionDate, String transactionTime){
+    public Feedback(String ovrResponse, String feedbackInput, String transactionDate, String transactionTime, String timeStamp, String merchantName,
+                    String userNumber){
+
+        this.ovrResponse = ovrResponse;
+
+        this.feedbackInput = feedbackInput;
+
+        this.transactionDate = transactionDate;
+
+        this.transactionTime = transactionTime;
+
+        this.timeStamp = timeStamp;
+
+        this.merchantName = merchantName;
+
+        this.userNumber = userNumber;
+    }
+
+
+    public Feedback(String ovrResponse, String transactionDate, String transactionTime, String merchantName, String userNumber){
 
         this.ovrResponse = ovrResponse;
 
         this.transactionDate = transactionDate;
 
         this.transactionTime = transactionTime;
+
+        this.merchantName = merchantName;
+
+        this.userNumber = userNumber;
     }
 
 
@@ -49,6 +78,30 @@ public class Feedback {
 
     public void setOvrResponse(String ovrResponse) {
         this.ovrResponse = ovrResponse;
+    }
+
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+    public void setUserNumber(String userNumber) {
+        this.userNumber = userNumber;
+    }
+
+    public String getmerchantName() {
+        return merchantName;
+    }
+
+    public String getTimeStamp() {
+        return timeStamp;
+    }
+
+    public String getUserNumber() {
+        return userNumber;
     }
 
     public String getTransactionTime() {

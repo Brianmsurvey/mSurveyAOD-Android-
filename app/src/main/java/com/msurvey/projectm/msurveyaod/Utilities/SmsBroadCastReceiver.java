@@ -23,6 +23,7 @@ import com.facebook.accountkit.AccountKitError;
 import com.facebook.accountkit.PhoneNumber;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.msurvey.projectm.msurveyaod.Feedback;
 import com.msurvey.projectm.msurveyaod.MainActivity;
 import com.msurvey.projectm.msurveyaod.R;
 import com.msurvey.projectm.msurveyaod.SplashActivity;
@@ -40,6 +41,8 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
     private String serviceProviderNumber;
 
     private String serviceProviderSmsCondition;
+
+    public static String userPhoneNumber;
 
     //Firebase
     private FirebaseDatabase database;
@@ -87,6 +90,8 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
                     PhoneNumber phoneNumber = account.getPhoneNumber();
                     if (phoneNumber != null) {
                         String phoneNumberString = phoneNumber.toString().replace("+", "");
+                        userPhoneNumber = phoneNumberString;
+                        Log.e(TAG, userPhoneNumber);
                         NetworkUtils.setPhoneNumber(phoneNumberString);
                     }
                 }
@@ -190,6 +195,8 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
                             FeedbackUtils.transactionDate = transactionDate;
                             FeedbackUtils.transactionTime = transactionTime;
                             FeedbackUtils.transactionDateTime = transactionDateTime;
+                            FeedbackUtils.userNumber = userPhoneNumber;
+                            FeedbackUtils.merchantName = CashReceiver;
 
                             final String howWasYourExperience = "How was your experience at " + CashReceiver + "?";
 
@@ -216,6 +223,8 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
                             FeedbackUtils.transactionDate = transactionDate;
                             FeedbackUtils.transactionTime = transactionTime;
                             FeedbackUtils.transactionDateTime = transactionDateTime;
+                            FeedbackUtils.userNumber = userNumber;
+                            FeedbackUtils.merchantName = CashReceiver;
 
                             String howWasYourExperience = "How was your experience at " + CashReceiver + "?";
                             Notification.Builder builder = helper.getChanelNotification(CashReceiver, howWasYourExperience, transactionDateTime);

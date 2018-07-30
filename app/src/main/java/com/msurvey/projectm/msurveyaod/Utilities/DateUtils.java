@@ -63,4 +63,12 @@ public class DateUtils {
 
         return date + ". " + time;
     }
+
+    public static String returnTimestamp(String date, String time) throws ParseException{
+
+    //To be written
+
+        return "";
+
+    }
 }
