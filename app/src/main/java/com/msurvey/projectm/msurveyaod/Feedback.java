@@ -31,7 +31,7 @@ public class Feedback {
         this.transactionTime = transactionTime;
     }
 
-    public Feedback(String ovrResponse, String feedbackInput, String transactionDate, String transactionTime, String timeStamp, String merchantName,
+    public Feedback(String ovrResponse, String feedbackInput, String transactionDate, String transactionTime, String merchantName,
                     String userNumber){
 
         this.ovrResponse = ovrResponse;
@@ -41,8 +41,6 @@ public class Feedback {
         this.transactionDate = transactionDate;
 
         this.transactionTime = transactionTime;
-
-        this.timeStamp = timeStamp;
 
         this.merchantName = merchantName;
 

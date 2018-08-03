@@ -40,6 +40,7 @@ public class ChangePhotoActivity extends AppCompatActivity {
     private Button mNextButton;
     private ImageView mTakenPhoto;
     private Uri mImageUri = null;
+
     private String item_image = null;
     private Bitmap bitmap = null;
     private ProgressBar mCircularProgress;
@@ -54,8 +55,8 @@ public class ChangePhotoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
-        //actionBar.setDisplayHomeAsUpEnabled(true);
-        //actionBar.setTitle("Add Photo");
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("Add Photo");
 
 
 

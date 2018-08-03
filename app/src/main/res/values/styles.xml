@@ -35,4 +35,29 @@
         <item name="paddingEnd">8dp</item>
         <item name="android:paddingBottom">-8dp</item>
     </style>
+
+    <style name="roboto_regular_textview" parent="@android:style/Widget.TextView">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="roboto_medium_textview" parent="@android:style/Widget.TextView">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="roboto_light_textview" parent="@android:style/Widget.TextView">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="Theme.Custom" parent="@android:style/Theme.Material.Light">
+        <item name="windowActionBar">false</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="android:windowActionBarOverlay">true</item>
+    </style>
+
+    <style name="CustomActionBar" parent="@android:style/Widget.ActionBar">
+        <item name="android:windowActionBarOverlay">true</item>
+        <!-- Support library compatibility -->
+        <item name="windowActionBarOverlay">true</item>
+    </style>
 </resources>

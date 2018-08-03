@@ -6,6 +6,11 @@
         <item name="radiovstv">Radio vs TV?</item>
         <item name="samsungvstechno">Samsung vs Techno?</item>
         <item name="eatingouttoday">Eating out today?</item>
+        <item name="debitcards">Cash vs Debit Cards?</item>
+        <item name="matatus">Cars vs Matatus?</item>
+        <item name="tv">Radio vs TV?</item>
+        <item name="techno">Samsung vs Techno?</item>
+        <item name="outtoday">Eating out today?</item>
     </string-array>
 
     <string-array name="no_questions">
@@ -14,6 +19,11 @@
         <item name="threequestions">3 questions</item>
         <item name="sixquestions">6 questions</item>
         <item name="sevenquestions">7 questions</item>
+        <item name="ivequestions">5 questions</item>
+        <item name="ightquestions">8 questions</item>
+        <item name="hreequestions">3 questions</item>
+        <item name="ixquestions">6 questions</item>
+        <item name="evenquestions">7 questions</item>
     </string-array>
 
     <string-array name="questions">

@@ -224,7 +224,7 @@ public class SplashActivity extends AppCompatActivity {
 
                     progressBar.setVisibility(View.INVISIBLE);
 
-                    Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
+                    Intent mainIntent = new Intent(SplashActivity.this, BottomNavActivity.class);
                     startActivity(mainIntent);
                     finish();
 

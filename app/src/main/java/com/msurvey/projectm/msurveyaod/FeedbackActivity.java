@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.msurvey.projectm.msurveyaod.Utilities.FeedbackUtils;
@@ -37,6 +39,8 @@ public class FeedbackActivity extends AppCompatActivity {
 
     private ImageView mVeryHappyEmoji, HappyEmoji, NeutralEmoji,
     SadEmoji, AngryEmoji;
+
+    private ImageView mAvator;
 
     private ImageView mCircleVeryHappy, mCircleHappy, mCircleNeutral,
     mCircleSad, mCircleAngry;
@@ -65,7 +69,7 @@ public class FeedbackActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("Feedback");
 
-
+        mAvator = findViewById(R.id.iv_store_avator);
 
         mStoreName = findViewById(R.id.store_name);
         mStoreTime = findViewById(R.id.sent_time);
@@ -93,6 +97,21 @@ public class FeedbackActivity extends AppCompatActivity {
         mStoreTime.setText(FeedbackUtils.transactionDateTime);
 
         Log.e(TAG, SmsBroadCastReceiver.userPhoneNumber);
+
+        //Avator letter
+        ColorGenerator generator = ColorGenerator.MATERIAL;
+
+        String letter = FeedbackUtils.cashReceiver.substring(0,1);
+
+        int color = generator.getRandomColor();
+
+        TextDrawable.IBuilder builder = TextDrawable.builder().beginConfig()
+                .endConfig().round();
+
+        TextDrawable drawable = builder.build(letter, color);
+
+        mAvator.setImageDrawable(drawable);
+
 
         mVeryHappyEmoji.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,7 +216,7 @@ public class FeedbackActivity extends AppCompatActivity {
                     finish();
 
                 }else{
-                    Feedback newFeedback = new Feedback(emojiResponse, FeedbackUtils.transactionDate, FeedbackUtils.transactionTime, FeedbackUtils.merchantName, SmsBroadCastReceiver.userPhoneNumber);
+                    Feedback newFeedback = new Feedback(emojiResponse, feedback, FeedbackUtils.transactionDate, FeedbackUtils.transactionTime, FeedbackUtils.merchantName, SmsBroadCastReceiver.userPhoneNumber);
 
                     mFeedback.setText("");
 

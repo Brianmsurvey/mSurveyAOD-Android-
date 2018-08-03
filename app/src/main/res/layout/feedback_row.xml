@@ -6,14 +6,13 @@
     android:clickable="true"
     android:paddingEnd="16dp"
     android:paddingStart="16dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:paddingTop="8dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/civ_merchant"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:src="@drawable/avatarcircleblue" />
+        android:src="@drawable/avatarcircleblue"/>
 
     <TextView
         android:id="@+id/tv_merchant"
@@ -22,31 +21,44 @@
         android:layout_marginTop="4dp"
         android:layout_marginStart="@dimen/md_keylines"
         android:layout_toEndOf="@+id/civ_merchant"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/colorLightGrey"
         android:text="Merchant"
         android:textAppearance="?android:attr/textAppearanceListItem"
-        android:textSize="12sp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/tv_feedback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="56dp"
-        android:layout_marginTop="4dp"
         android:layout_below="@+id/tv_merchant"
         android:layout_marginStart="@dimen/md_keylines"
         android:layout_toEndOf="@+id/civ_merchant"
-        android:textColor="#424242"
+        android:textColor="@color/colorReallyLightGrey"
         android:ellipsize="end"
         android:singleLine="true"
+        android:fontFamily="sans-serif-light"
         android:text="The service was great!"
         android:textAppearance="?android:attr/textAppearanceListItem"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/iv_emoji"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_toEndOf="@+id/civ_merchant"
+        android:visibility="gone"
+        android:layout_below="@+id/tv_merchant"
+        android:src="@drawable/veryhappy"/>
 
     <TextView
         android:id="@+id/tv_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/tv_feedback"
+        android:layout_marginTop="4dp"
         android:layout_marginStart="16dp"
         android:layout_alignParentEnd="true"
         android:textSize="12sp"
@@ -55,6 +67,7 @@
         android:textStyle="bold"
         android:backgroundTint="@color/colorPrimary"
         android:paddingStart="7dp"
+        android:fontFamily="sans-serif-light"
         android:paddingEnd="7dp"
         android:paddingTop="2dp"
         android:paddingBottom="4dp" />
@@ -65,8 +78,8 @@
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/tv_feedback"
         android:layout_below="@+id/tv_date"
-        android:layout_marginTop="4dp"
         android:layout_marginStart="16dp"
+        android:fontFamily="sans-serif-light"
         android:layout_alignParentEnd="true"
         android:textSize="12sp"
         android:text="13:04pm"
@@ -77,5 +90,13 @@
         android:paddingEnd="7dp"
         android:paddingTop="2dp"
         android:paddingBottom="4dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/tv_time"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="64dp"
+        android:background="#f1f1f1"/>
 
 </RelativeLayout>

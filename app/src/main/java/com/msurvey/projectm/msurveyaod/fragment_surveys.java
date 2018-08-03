@@ -9,35 +9,54 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
+
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class fragment_surveys extends Fragment {
 
+    private Toolbar toolbar;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_surveys, container, false);
 
-        RecyclerView surveysView = (RecyclerView) inflater.inflate(R.layout.fragment_surveys, container, false);
+        RecyclerView surveysView = view.findViewById(R.id.rv_surveys);
+
+
+        toolbar = view.findViewById(R.id.surveys_toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        toolbar.setElevation(0);
+        actionBar.setTitle("Surveys");
+        //actionBar.setDisplayHomeAsUpEnabled(true);
 
         ContentAdapter adapter = new ContentAdapter(surveysView.getContext());
         surveysView.setAdapter(adapter);
         surveysView.setHasFixedSize(true);
         surveysView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        return surveysView;
+        return view;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        public CircleImageView avator;
+        public ImageView avator;
         public TextView survey;
         public TextView questions_no;
         public ViewHolder(LayoutInflater inflater, ViewGroup parent){
@@ -63,7 +82,7 @@ public class fragment_surveys extends Fragment {
     public static class ContentAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         // Set numbers of List in RecyclerView.
-        private static final int LENGTH = 5;
+        private static final int LENGTH = 10;
 
         private final String[] mSurveys;
         private final String[] mQuestionsNo;
@@ -79,6 +98,7 @@ public class fragment_surveys extends Fragment {
 //                mPlaceAvators[i] = a.getDrawable(i);
 //            }
 //            a.recycle();
+
         }
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -89,6 +109,19 @@ public class fragment_surveys extends Fragment {
         public void onBindViewHolder(ViewHolder holder, int position) {
             holder.survey.setText(mSurveys[position % mSurveys.length]);
             holder.questions_no.setText(mQuestionsNo[position % mQuestionsNo.length]);
+
+            ColorGenerator generator = ColorGenerator.MATERIAL;
+
+            String letter = mSurveys[position % mSurveys.length].substring(0,1);
+
+            int color = generator.getRandomColor();
+
+            TextDrawable.IBuilder builder = TextDrawable.builder().beginConfig()
+                    .endConfig().round();
+
+            TextDrawable drawable = builder.build(letter, color);
+
+            holder.avator.setImageDrawable(drawable);
         }
 
         @Override

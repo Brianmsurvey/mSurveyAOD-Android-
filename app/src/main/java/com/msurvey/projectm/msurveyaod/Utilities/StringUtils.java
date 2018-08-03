@@ -18,6 +18,8 @@ public class StringUtils {
 
     public static String tellUsSomething = "Tell us about it";
 
+    public static String userName = "";
+
     public static String monthRegexChecker(String stringToCheck){
 
         String monthRegex = "[A-Za-z]{3}";

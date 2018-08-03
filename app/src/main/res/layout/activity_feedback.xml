@@ -32,22 +32,36 @@
         <!--android:layout_marginTop="96dp"-->
         <!--android:src="@drawable/profilepic"/>-->
 
+    <ImageView
+        android:id="@+id/iv_store_avator"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="104dp"
+        android:src="@drawable/avatarcircleblue"/>
+
     <TextView
         android:id="@+id/store_name"
         android:textSize="20sp"
         android:text="@string/store_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="96dp"
-        android:layout_centerInParent="true"/>
+        android:layout_marginTop="16dp"
+        android:textColor="@color/colorReallyLightGrey"
+        android:fontFamily="sans-serif-light"
+        android:layout_below="@+id/iv_store_avator"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:id="@+id/sent_time"
         android:text="@string/store_sent_time"
+        android:textSize="12sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:textColor="@color/colorLightGrey"
+        android:fontFamily="sans-serif"
         android:layout_gravity="center"
         android:layout_below="@+id/store_name"
         android:layout_centerHorizontal="true"/>
@@ -55,8 +69,9 @@
     <TextView
         android:id="@+id/rate"
         android:text="@string/rate_your_experience"
-        android:textSize="24sp"
-        android:layout_marginTop="48dp"
+        android:textSize="20sp"
+        android:layout_marginTop="36dp"
+        android:fontFamily="sans-serif-light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -67,7 +82,7 @@
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:gravity="center"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_below="@+id/rate">

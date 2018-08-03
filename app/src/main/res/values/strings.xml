@@ -7,21 +7,22 @@
     <string name="airtime_earned">Airtime Earned</string>
     <string name="this_month">This Month</string>
     <string name="amount_earned">AMOUNT EARNED</string>
-    <string name="questions_completed">QUESTIONS COMPLETED</string>
-    <string name="surveys_completed">SURVEYS COMPLETED</string>
+    <string name="questions_completed">Questions Answered</string>
+    <string name="questions_completed_no">-</string>
+    <string name="surveys_completed">Surveys Completed</string>
     <string name="amount_earned_no">-</string>
-    <string name="questions_completed_no">23</string>
+    <string name="surveys_completed_no">23</string>
     <string name="airtime_earned_cash">3,245</string>
     <string name="ksh">KSH</string>
     <string name="msurvey_name">mSurvey</string>
     <string name="msurvey_motto">Real people. Real thoughts. \n Real time.</string>
     <string name="basic_info">Basic Info</string>
     <string name="age">Age</string>
-    <string name="age_no">28</string>
+    <string name="age_no">-</string>
     <string name="gender">Gender</string>
-    <string name="gender_selection">Male</string>
+    <string name="gender_selection">-</string>
     <string name="dob">Date of Birth</string>
-    <string name="dob_no">18/05/1992</string>
+    <string name="dob_no">-</string>
     <string name="recent_activity">Recent Activity</string>
 
 
@@ -29,7 +30,7 @@
     <string name="store_name">Java Coffee House</string>
     <string name="store_sent_time">Wednesday, 24th Sep 2018. 12:53pm</string>
     <string name="rate_your_experience">Rate your experience</string>
-    <string name="tellussomething">Tell us something</string>
+    <string name="tellussomething">Let us know what you think</string>
     <string name="submit_btn">Submit</string>
 
     <!--facebook account kit-->

@@ -289,7 +289,7 @@ public class LoginOrSignUpActivity extends AppCompatActivity {
 
 
 
-                    Intent mainIntent = new Intent(LoginOrSignUpActivity.this, MainActivity.class);
+                    Intent mainIntent = new Intent(LoginOrSignUpActivity.this, BottomNavActivity.class);
                     startActivity(mainIntent);
                     finish();
 

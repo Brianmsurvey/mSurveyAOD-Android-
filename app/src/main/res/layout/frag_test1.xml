@@ -1,186 +1,321 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".BottomNavActivity">
 
-    <FrameLayout
-        android:id="@+id/section_avatar"
+    <android.support.constraint.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="172dp"
-        android:background="#2196F3">
+        android:layout_height="wrap_content">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/civ_profile_avator"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:layout_gravity="center|top"
-            android:layout_marginTop="24dp"
-            android:src="@drawable/avatarcircleblue" />
+        <FrameLayout
+            android:id="@+id/section_avatar"
+            android:layout_width="match_parent"
+            android:layout_height="172dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#2196F3"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civ_profile_avator"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_gravity="center|top"
+                android:layout_marginTop="24dp"
+                android:src="@drawable/avatarcircleblue" />
+
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:fontFamily="sans-serif-light"
+                android:text=""
+                android:layout_marginTop="32dp"/>
+
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:layout_marginTop="56dp"
+                android:text="Nairobi, Kenya"/>
+
+
+
+        </FrameLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/airtime_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/section_avatar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/airtime_earned_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/airtime_earned_cash"
+                android:fontFamily="sans-serif-light"
+                android:textSize="36sp"
+                android:textColor="@android:color/black"/>
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_name"
+            android:id="@+id/airtime_earned_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:text="Brian Ngugi"
-            android:layout_marginTop="32dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="12sp"
-            android:textColor="@color/white"
-            android:layout_marginTop="56dp"
-            android:text="Nairobi, Kenya"/>
-
-    </FrameLayout>
-
-
-
-    <LinearLayout
-        android:id="@+id/airtime_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_below="@+id/section_avatar"
-        android:gravity="center">
-
-        <TextView
-            android:id="@+id/airtime_earned_no"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/airtime_earned_cash"
-            android:textSize="36sp"
+            android:text="@string/airtime_earned"
+            app:layout_constraintTop_toBottomOf="@+id/airtime_layout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:fontFamily="sans-serif"
+            android:textSize="9sp"
             android:textColor="@color/colorLightGrey"/>
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/surveyscompleted_layout"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/airtime_layout"
+            app:layout_constraintTop_toBottomOf="@+id/section_avatar"
+            app:layout_constraintLeft_toRightOf="@+id/airtime_earned_title"
+            app:layout_constraintRight_toRightOf="parent"
+            android:gravity="center|end"
+            android:layout_marginTop="8dp">
 
-    <TextView
-        android:id="@+id/airtime_earned_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/airtime_earned"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/airtime_layout"
-        android:textSize="9sp"
-        android:textColor="@color/colorPrimary"/>
+            <TextView
+                android:id="@+id/surveys_completed_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:text="@string/surveys_completed_no"
+                android:textColor="@android:color/black"
+                android:textSize="36sp" />
 
-    <View
-        android:id="@+id/divider_one"
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:layout_marginTop="16dp"
-        android:background="#e7e7e7"
-        android:layout_below="@id/airtime_earned_title"/>
-
-    <RelativeLayout
-        android:id="@+id/basicinfo_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_below="@+id/divider_one"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp">
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_basicinfo"
+            android:id="@+id/surveys_completed_title"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/basicinfo_layout"
+            app:layout_constraintTop_toBottomOf="@+id/surveyscompleted_layout"
+            app:layout_constraintLeft_toRightOf="@+id/airtime_earned_title"
+            app:layout_constraintRight_toRightOf="parent"
+            android:gravity="center"
+            android:text="@string/surveys_completed"
+            android:textColor="@color/colorLightGrey"
+            android:textSize="9sp" />
+
+
+        <LinearLayout
+            android:id="@+id/questions_answered_layout"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/airtime_layout"
+            app:layout_constraintTop_toBottomOf="@+id/section_avatar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/airtime_earned_title"
+            android:layout_marginTop="8dp"
+            android:gravity="center|start">
+
+            <TextView
+                android:id="@+id/questions_answered_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:text="@string/questions_completed_no"
+                android:textColor="@android:color/black"
+                android:textSize="36sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/questions_answered_title"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/airtime_layout"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/questions_answered_layout"
+            app:layout_constraintRight_toLeftOf="@+id/airtime_earned_title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:text="@string/questions_completed"
+            android:textColor="@color/colorLightGrey"
+            android:textSize="9sp" />
+
+
+        <View
+            android:id="@+id/divider_one"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/airtime_earned_title"
+            app:layout_constraintRight_toLeftOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:background="#e7e7e7"
+            android:layout_below="@id/airtime_earned_title"/>
+
+        <RelativeLayout
+            android:id="@+id/basicinfo_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/divider_one"
+            app:layout_constraintRight_toLeftOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_below="@+id/tv_basicinfo"
+                android:tint="@color/colorLightGrey"
+                android:src="@drawable/baseline_info_24"/>
+
+            <TextView
+                android:id="@+id/tv_basicinfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/basic_info"
+                android:textSize="12sp"
+                android:textColor="@color/colorLightGrey"/>
+
+            <TextView
+                android:id="@+id/tv_age_title"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="48dp"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:text="@string/age"
+                android:layout_below="@+id/tv_basicinfo"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/tv_age"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="48dp"
+                android:gravity="center"
+                android:text="@string/age_no"
+                android:layout_below="@+id/tv_age_title"
+                android:textColor="@android:color/black"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/tv_gender_title"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/gender"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/tv_basicinfo"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/tv_gender"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_centerHorizontal="true"
+                android:text="@string/gender_selection"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:layout_below="@+id/tv_age_title"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/tv_dob"
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/tv_basicinfo"
+                android:fontFamily="sans-serif-medium"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/dob"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_dob_no"
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="8dp"
+                android:text="@string/dob_no"
+                android:layout_alignParentEnd="true"
+                android:textColor="@android:color/black"
+                android:layout_marginEnd="24dp"
+                android:layout_below="@+id/tv_age_title"
+                android:textSize="12sp"/>
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/divider_two"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/basicinfo_layout"
+            app:layout_constraintRight_toLeftOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:background="#e7e7e7" />
+
+        <TextView
+            android:id="@+id/tv_recent_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/basic_info"
+            android:text="@string/recent_activity"
+            app:layout_constraintTop_toBottomOf="@+id/divider_two"
+            android:layout_marginStart="24dp"
+            app:layout_constraintLeft_toLeftOf="parent"
             android:textSize="12sp"
-            android:textColor="@color/colorLightGrey"/>
+            android:textColor="@color/colorLightGrey"
+            android:layout_marginTop="16dp"/>
 
-        <TextView
-            android:id="@+id/tv_age_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="48dp"
-            android:text="@string/age"
-            android:layout_below="@+id/tv_basicinfo"
-            android:textSize="12sp"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_recent_activity"
+            android:layout_marginBottom="56dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_marginTop="16dp"/>
 
-        <TextView
-            android:id="@+id/tv_age"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="48dp"
-            android:text="@string/age_no"
-            android:layout_below="@+id/tv_age_title"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:id="@+id/tv_gender_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/gender"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/tv_basicinfo"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:id="@+id/tv_gender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_centerHorizontal="true"
-            android:text="@string/gender_selection"
-            android:layout_below="@+id/tv_age_title"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:id="@+id/tv_dob"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="24dp"
-            android:text="@string/dob"
-            android:layout_below="@+id/tv_basicinfo"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:id="@+id/tv_dob_no"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/dob_no"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="24dp"
-            android:layout_below="@+id/tv_age_title"
-            android:textSize="12sp"/>
-
-    </RelativeLayout>
-
-    <View
-        android:id="@+id/divider_two"
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:layout_marginTop="16dp"
-        android:layout_below="@+id/basicinfo_layout"
-        android:background="#e7e7e7" />
-
-    <TextView
-        android:id="@+id/tv_recent_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/recent_activity"
-        android:layout_below="@+id/divider_two"
-        android:textSize="12sp"
-        android:textColor="@color/colorLightGrey"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_feedback"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_recent_activity"
-        android:layout_marginTop="16dp"/>
-
-</RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

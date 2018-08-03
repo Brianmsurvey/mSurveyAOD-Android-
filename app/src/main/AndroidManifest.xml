@@ -68,6 +68,8 @@
 
         <activity android:name=".EmptyStateActivity"/>
 
+        <activity android:name=".EditInfoActivity"/>
+
         <activity android:name=".LoginOrSignUpActivity"/>
 
         <activity android:name=".MainActivity"/>
@@ -77,6 +79,8 @@
         <activity android:name=".SuccessActivity"/>
 
         <activity android:name=".FeedbackHistoryTest"/>
+
+        <activity android:name=".ScrollTestActivity"/>
 
         <activity android:name=".BottomNavActivity"/>
 
