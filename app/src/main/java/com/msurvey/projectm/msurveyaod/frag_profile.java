@@ -30,12 +30,17 @@ import com.facebook.accountkit.AccountKitCallback;
 import com.facebook.accountkit.AccountKitError;
 import com.facebook.accountkit.PhoneNumber;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.msurvey.projectm.msurveyaod.Utilities.EmojiUtils;
 import com.msurvey.projectm.msurveyaod.Utilities.NetworkUtils;
 import com.msurvey.projectm.msurveyaod.Utilities.PhotoUtils;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -53,6 +58,7 @@ public class frag_profile extends Fragment {
     private Toolbar toolbar;
 
     private TextView mUserName, mLocation, mMerchantName, mFeedback, mDate, mTime;
+    private TextView mAge, mGender, mDob;
 
     private TextView AirtimeEarned;
     private TextView SurveysCompleted;
@@ -64,13 +70,16 @@ public class frag_profile extends Fragment {
     
     //Firebase
     private DatabaseReference mFeedbackDatabase;
+    private DatabaseReference mUserDatabase;
+
+    private static final String TAG = "Profile Fragment";
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View profileView = inflater.inflate(R.layout.frag_test1, container, false);
-        
+
         recyclerView = profileView.findViewById(R.id.rv_feedback);
 
         AirtimeEarned = profileView.findViewById(R.id.airtime_earned_no);
@@ -78,6 +87,9 @@ public class frag_profile extends Fragment {
         mAvator = profileView.findViewById(R.id.civ_profile_avator);
         mUserName = profileView.findViewById(R.id.tv_name);
         mLocation = profileView.findViewById(R.id.tv_location);
+        mAge = profileView.findViewById(R.id.tv_age);
+        mGender = profileView.findViewById(R.id.tv_gender);
+        mDob = profileView.findViewById(R.id.tv_dob_no);
 
         AirtimeEarned.setText(NetworkUtils.getAirtimeEarned());
 
@@ -90,37 +102,18 @@ public class frag_profile extends Fragment {
         if (accessToken != null) {
 
 
-            AccountKit.getCurrentAccount(new AccountKitCallback<Account>() {
-                @Override
-                public void onSuccess(final Account account) {
-                    // Get Account Kit ID
-                    String accountKitId = account.getId();
-
-                    // Get phone number
-                    PhoneNumber phoneNumber = account.getPhoneNumber();
-                    if (phoneNumber != null) {
-                        String phoneNumberString = phoneNumber.toString().replace("+", "");
-                        userPhoneNumber = phoneNumberString;
-                        NetworkUtils.setPhoneNumber(phoneNumberString);
-                    }
-                }
-
-                @Override
-                public void onError(final AccountKitError error) {
-                    // Handle Error
-
-
-                }
-
-            });
+            userPhoneNumber = getActivity().getSharedPreferences("my_preferences", MODE_PRIVATE).getString("phoneNumber", "");
         }
 
 
-        //Get the Shared Preferences
+        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userPhoneNumber);
+
+
+        //Get the Shared Preferences for Phone Number
         final SharedPreferences prefs = getActivity().getSharedPreferences("my_preferences", MODE_PRIVATE);
         final String userName = "name";
 
-        if(!prefs.getString(userName, "").equals("")) {
+        if (!prefs.getString(userName, "").equals("")) {
 
             String name = prefs.getString(userName, "");
             mUserName.setText(name);
@@ -128,11 +121,41 @@ public class frag_profile extends Fragment {
         }
 
 
-        //Get the Shared Preferences
+        //Get the Shared Preferences for image
         final SharedPreferences preferences = getActivity().getSharedPreferences("my_preferences", MODE_PRIVATE);
         final String imageFound = "image_found";
 
-        if(!preferences.getString(imageFound, "").equals("")) {
+        mUserDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                User user = dataSnapshot.getValue(User.class);
+
+                final String image = user.getAvatorImage();
+
+                if(!TextUtils.isEmpty(image)) setAvatorImage(image);
+
+                if(!TextUtils.isEmpty(user.getName())) mUserName.setText(user.getName());
+
+                String location = user.getLocation() + ", Kenya";
+
+                if(!TextUtils.isEmpty(user.getLocation())) mLocation.setText(location);
+
+                if(!TextUtils.isEmpty(user.getUserAge())) mAge.setText(user.getUserAge());
+
+                if(!TextUtils.isEmpty(user.getUserDob())) mDob.setText(user.getUserDob());
+
+                if(!TextUtils.isEmpty(user.getUserGender())) mGender.setText(user.getUserGender());
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        if(!preferences.getString(imageFound, "").equals("") && TextUtils.isEmpty(mUserName.getText().toString())) {
 
             Uri image = Uri.parse(preferences.getString(imageFound, ""));
             Picasso.get().load(image).resize(660, 660).centerInside().into(mAvator);
@@ -157,6 +180,8 @@ public class frag_profile extends Fragment {
 
         context = getActivity();
 
+        userPhoneNumber = getActivity().getSharedPreferences("my_preferences", MODE_PRIVATE).getString("phoneNumber", "");
+
         Query mUserFeedbackDatabase = FirebaseDatabase.getInstance().getReference().child("TestCustomerFeedback").orderByChild("userNumber").equalTo(userPhoneNumber);
 
         FirebaseRecyclerAdapter<Feedback, FeedbackViewHolder> FeedbackFirebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Feedback, FeedbackViewHolder>(
@@ -179,6 +204,7 @@ public class frag_profile extends Fragment {
             public FeedbackViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 return super.onCreateViewHolder(parent, viewType);
             }
+
         };
 
         recyclerView.setAdapter(FeedbackFirebaseRecyclerAdapter);
@@ -271,5 +297,21 @@ public class frag_profile extends Fragment {
             mTime = mView.findViewById(R.id.tv_time);
             mTime.setText(time);
         }
+    }
+
+    public void setAvatorImage(final String image){
+
+        Picasso.get().load(image).resize(660, 660).centerInside().onlyScaleDown().networkPolicy(NetworkPolicy.OFFLINE).into(mAvator, new Callback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Picasso.get().load(image).resize(660, 660).onlyScaleDown().centerInside().into(mAvator);
+            }
+
+        });
     }
 }

@@ -3,6 +3,7 @@ package com.msurvey.projectm.msurveyaod;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.text.emoji.EmojiCompat;
 import android.support.text.emoji.widget.EmojiTextView;
 import android.support.v7.app.ActionBar;
@@ -95,8 +96,6 @@ public class FeedbackActivity extends AppCompatActivity {
         mStoreName.setText(FeedbackUtils.cashReceiver);
 
         mStoreTime.setText(FeedbackUtils.transactionDateTime);
-
-        Log.e(TAG, SmsBroadCastReceiver.userPhoneNumber);
 
         //Avator letter
         ColorGenerator generator = ColorGenerator.MATERIAL;
@@ -199,7 +198,7 @@ public class FeedbackActivity extends AppCompatActivity {
 
                 if(emojiResponse.equals("") || emojiResponse.equals("Rate your experience")){
 
-                    Toast.makeText(FeedbackActivity.this, "Rate your experience", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(view, "Rate your experience", Snackbar.LENGTH_SHORT).show();
 
                 }else if(feedback.equals("")){
 
@@ -208,8 +207,6 @@ public class FeedbackActivity extends AppCompatActivity {
                     mFeedback.setText("");
 
                     mFeedbackDatabase.push().setValue(newFeedback);
-
-                    //mFeedbackDatabase.child(FeedbackUtils.cashReceiver).child(FeedbackUtils.transactionDate).push().setValue(newFeedback);
 
                     Intent successIntent = new Intent(FeedbackActivity.this, SuccessActivity.class);
                     startActivity(successIntent);

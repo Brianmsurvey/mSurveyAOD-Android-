@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,8 @@ import com.facebook.accountkit.AccountKit;
 import com.facebook.accountkit.AccountKitCallback;
 import com.facebook.accountkit.AccountKitError;
 import com.facebook.accountkit.PhoneNumber;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.msurvey.projectm.msurveyaod.Utilities.HTTPDataHandler;
 import com.msurvey.projectm.msurveyaod.Utilities.NetworkUtils;
 
@@ -36,6 +39,8 @@ public class SplashActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
 
+    private DatabaseReference mUserDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +50,8 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splashscreen2);
 
         progressBar = findViewById(R.id.progress_bar);
+
+        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -60,6 +67,7 @@ public class SplashActivity extends AppCompatActivity {
 
         final SharedPreferences preferences = getSharedPreferences("my_preferences", MODE_PRIVATE);
         final String onboardingComplete = "onboarding_complete";
+        final String phoneNumberPrefs = "phoneNumber";
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -80,8 +88,10 @@ public class SplashActivity extends AppCompatActivity {
                             // Get phone number
                             PhoneNumber phoneNumber = account.getPhoneNumber();
                             if (phoneNumber != null) {
-                                String phoneNumberString = phoneNumber.toString().substring(1);
+                                String phoneNumberString = phoneNumber.toString().replace("+", "");
                                 NetworkUtils.setPhoneNumber(phoneNumberString);
+                                mUserDatabase.child(phoneNumberString).child("phoneNumber").setValue(phoneNumberString);
+                                preferences.edit().putString(phoneNumberPrefs, phoneNumberString).apply();
                                 Log.e(TAG, phoneNumberString);
                             }
 

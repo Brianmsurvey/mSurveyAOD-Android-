@@ -24,18 +24,45 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v7.widget.RecyclerView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/rv_surveys"
-        android:layout_marginTop="?android:attr/actionBarSize"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="@dimen/md_keylines"
-        android:paddingTop="@dimen/md_keylines"
-        android:scrollbars="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    </android.support.v7.widget.RecyclerView>
+        android:background="@color/white">
+
+
+        <ImageView
+            android:layout_width="212dp"
+            android:layout_height="212dp"
+            android:src="@drawable/nosurveysemptystate"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No surveys to fill"
+            android:fontFamily="sans-serif-light"
+            android:layout_gravity="center"
+            android:layout_marginTop="128dp"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="@color/colorReallyLightGrey"/>
+
+        <android.support.v7.widget.RecyclerView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/rv_surveys"
+            android:layout_marginTop="?android:attr/actionBarSize"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/md_keylines"
+            android:paddingTop="@dimen/md_keylines"
+            android:visibility="gone"
+            android:scrollbars="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        </android.support.v7.widget.RecyclerView>
+
+    </FrameLayout>
+
 
 </RelativeLayout>
 

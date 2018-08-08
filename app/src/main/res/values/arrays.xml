@@ -13,6 +13,17 @@
         <item name="outtoday">Eating out today?</item>
     </string-array>
 
+    <string-array name="genders">
+        <item name="male">Male</item>
+        <item name="female">Female</item>
+    </string-array>
+
+    <string-array name="location">
+        <item name="nairobi">Nairobi</item>
+        <item name="mombasa">Mombasa</item>
+        <item name="kisumu">Kisumu</item>
+    </string-array>
+
     <string-array name="no_questions">
         <item name="fivequestions">5 questions</item>
         <item name="eightquestions">8 questions</item>

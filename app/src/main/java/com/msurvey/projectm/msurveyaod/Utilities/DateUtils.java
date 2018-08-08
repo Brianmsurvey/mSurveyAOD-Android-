@@ -39,7 +39,7 @@ public class DateUtils {
 
         Date newDate = parser.parse(date);
 
-        SimpleDateFormat newFormat = new SimpleDateFormat("EEE dd MMM yyyy", Locale.ENGLISH);
+        SimpleDateFormat newFormat = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
 
         //Format to different date format
 
