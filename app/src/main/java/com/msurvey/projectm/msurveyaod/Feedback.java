@@ -17,6 +17,8 @@ public class Feedback {
 
     private String userNumber;
 
+    private String amountTransacted;
+
 
     public Feedback(){};
 
@@ -31,8 +33,24 @@ public class Feedback {
         this.transactionTime = transactionTime;
     }
 
+//    public Feedback(String ovrResponse, String feedbackInput, String transactionDate, String transactionTime, String merchantName,
+//                    String userNumber){
+//
+//        this.ovrResponse = ovrResponse;
+//
+//        this.feedbackInput = feedbackInput;
+//
+//        this.transactionDate = transactionDate;
+//
+//        this.transactionTime = transactionTime;
+//
+//        this.merchantName = merchantName;
+//
+//        this.userNumber = userNumber;
+//    }
+
     public Feedback(String ovrResponse, String feedbackInput, String transactionDate, String transactionTime, String merchantName,
-                    String userNumber){
+                    String userNumber, String amountTransacted){
 
         this.ovrResponse = ovrResponse;
 
@@ -45,10 +63,11 @@ public class Feedback {
         this.merchantName = merchantName;
 
         this.userNumber = userNumber;
+
+        this.amountTransacted = amountTransacted;
     }
 
-
-    public Feedback(String ovrResponse, String transactionDate, String transactionTime, String merchantName, String userNumber){
+    public Feedback(String ovrResponse, String transactionDate, String transactionTime, String merchantName, String userNumber, String amountTransacted){
 
         this.ovrResponse = ovrResponse;
 
@@ -59,6 +78,8 @@ public class Feedback {
         this.merchantName = merchantName;
 
         this.userNumber = userNumber;
+
+        this.amountTransacted = amountTransacted;
     }
 
 
@@ -68,6 +89,10 @@ public class Feedback {
 
     public void setTransactionDate(String transactionDate) {
         this.transactionDate = transactionDate;
+    }
+
+    public void setAmountTransacted(String amountTransacted) {
+        this.amountTransacted = amountTransacted;
     }
 
     public void setFeedbackInput(String feedbackInput) {
@@ -100,6 +125,10 @@ public class Feedback {
 
     public String getUserNumber() {
         return userNumber;
+    }
+
+    public String getAmountTransacted() {
+        return amountTransacted;
     }
 
     public String getTransactionTime() {

@@ -184,11 +184,13 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
 
                             mpesaSMS mpesaSMS;
                             mpesaSMS = SmsUtils.parseSms(message);
-                            mUserDatabase.child(userNumber).child("mpesaData").child(mpesaSMS.getTransactionId()).setValue(mpesaSMS);
+
+                            mUserDatabase.child(userPhoneNumber.replace("+", "")).child("mpesaData").child(mpesaSMS.getTransactionId()).setValue(mpesaSMS);
 
 
                             String transactionTime = SmsUtils.returnTransactionTime(message);
                             String transactionDate = SmsUtils.returnTransactionDate(message);
+                            String amountTransacted = SmsUtils.returnAmountTransacted(message);
                             final String transactionDateTime = DateUtils.returnFormalDate(transactionDate, transactionTime);
 
                             FeedbackUtils.cashReceiver = CashReceiver;
@@ -197,6 +199,7 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
                             FeedbackUtils.transactionDateTime = transactionDateTime;
                             FeedbackUtils.userNumber = userPhoneNumber;
                             FeedbackUtils.merchantName = CashReceiver;
+                            FeedbackUtils.amountTransacted = amountTransacted;
 
                             final String howWasYourExperience = "How was your experience at " + CashReceiver + "?";
 
@@ -212,7 +215,7 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
 
                             mpesaSMS mpesaSMS;
                             mpesaSMS = SmsUtils.parsePaybillSms(message);
-                            mUserDatabase.child(userNumber.replace("+", "")).child("mpesaData")
+                            mUserDatabase.child(userPhoneNumber.replace("+", "")).child("mpesaData")
                                     .child(mpesaSMS.getTransactionId()).setValue(mpesaSMS);
 
                             String transactionTime = SmsUtils.returnTransactionTime(message);
@@ -235,7 +238,7 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
 
                             mpesaSMS mpesaSMS;
                             mpesaSMS = SmsUtils.parseP2PSms(message);
-                            mUserDatabase.child(userNumber).child("mpesaData")
+                            mUserDatabase.child(userPhoneNumber.replace("+", "")).child("mpesaData")
                                     .child(mpesaSMS.getTransactionId()).setValue(mpesaSMS);
                         }
                     }

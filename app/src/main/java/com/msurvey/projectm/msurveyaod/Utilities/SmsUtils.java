@@ -229,6 +229,11 @@ public class SmsUtils {
 
     }
 
+    public static String returnAmountTransacted(String message){
+
+        return StringUtils.regexChecker(message, MpesaUtils.amountTransactionRegex);
+    }
+
     //Paybill
     public static String returnPayBillCashReceiver(String message) {
 

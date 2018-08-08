@@ -48,6 +48,22 @@ public class DateUtils {
         return date;
     }
 
+    public static String returnTransactionDate(String date) throws ParseException{
+
+        SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yy", Locale.ENGLISH);
+
+        Date newDate = parser.parse(date);
+
+        SimpleDateFormat newFormat = new SimpleDateFormat("EEE dd MMM yyyy", Locale.ENGLISH);
+
+        //Format to different date format
+
+        date =newFormat.format(newDate);
+
+        return date;
+
+    }
+
 
     public static String returnFormalDate(String date, String time) throws ParseException {
 

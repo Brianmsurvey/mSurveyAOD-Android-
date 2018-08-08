@@ -202,7 +202,7 @@ public class FeedbackActivity extends AppCompatActivity {
 
                 }else if(feedback.equals("")){
 
-                    Feedback newFeedback = new Feedback(emojiResponse, FeedbackUtils.transactionDate, FeedbackUtils.transactionTime, FeedbackUtils.merchantName, SmsBroadCastReceiver.userPhoneNumber);
+                    Feedback newFeedback = new Feedback(emojiResponse, FeedbackUtils.transactionDate, FeedbackUtils.transactionTime, FeedbackUtils.merchantName, SmsBroadCastReceiver.userPhoneNumber, FeedbackUtils.amountTransacted);
 
                     mFeedback.setText("");
 
@@ -213,7 +213,7 @@ public class FeedbackActivity extends AppCompatActivity {
                     finish();
 
                 }else{
-                    Feedback newFeedback = new Feedback(emojiResponse, feedback, FeedbackUtils.transactionDate, FeedbackUtils.transactionTime, FeedbackUtils.merchantName, SmsBroadCastReceiver.userPhoneNumber);
+                    Feedback newFeedback = new Feedback(emojiResponse, feedback, FeedbackUtils.transactionDate, FeedbackUtils.transactionTime, FeedbackUtils.merchantName, SmsBroadCastReceiver.userPhoneNumber, FeedbackUtils.amountTransacted);
 
                     mFeedback.setText("");
 

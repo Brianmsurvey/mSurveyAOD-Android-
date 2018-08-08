@@ -16,4 +16,6 @@ public class FeedbackUtils {
 
     public static String userNumber = "";
 
+    public static String amountTransacted = "";
+
 }

@@ -10,8 +10,9 @@
 
     <ImageView
         android:id="@+id/civ_merchant"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_marginTop="4dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:src="@drawable/avatarcircleblue"/>
 
     <TextView
@@ -25,7 +26,7 @@
         android:textColor="@color/colorLightGrey"
         android:text="Merchant"
         android:textAppearance="?android:attr/textAppearanceListItem"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/tv_feedback"

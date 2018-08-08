@@ -5,10 +5,12 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +31,8 @@ public class fragment_surveys extends Fragment {
 
     private Toolbar toolbar;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,6 +41,7 @@ public class fragment_surveys extends Fragment {
 
         RecyclerView surveysView = view.findViewById(R.id.rv_surveys);
 
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
         toolbar = view.findViewById(R.id.surveys_toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -46,6 +51,19 @@ public class fragment_surveys extends Fragment {
         actionBar.setTitle("Surveys");
         //actionBar.setDisplayHomeAsUpEnabled(true);
 
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(android.R.color.holo_blue_light),
+                getResources().getColor(android.R.color.holo_green_light),
+                getResources().getColor(android.R.color.holo_orange_light),
+                getResources().getColor(android.R.color.holo_red_light));
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //Refresh items
+                refreshItems();
+            }
+        });
+
+
         ContentAdapter adapter = new ContentAdapter(surveysView.getContext());
         surveysView.setAdapter(adapter);
         surveysView.setHasFixedSize(true);
@@ -53,6 +71,30 @@ public class fragment_surveys extends Fragment {
 
         return view;
     }
+
+
+    void refreshItems(){
+
+        //Load items
+
+        //Load complete
+        onItemsLoadComplete();
+    }
+
+    void onItemsLoadComplete(){
+
+        //Update the adpater to notify data set change
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 3500);
+
+    }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 

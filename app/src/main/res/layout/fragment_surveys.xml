@@ -47,19 +47,28 @@
             android:textSize="18sp"
             android:textColor="@color/colorReallyLightGrey"/>
 
-        <android.support.v7.widget.RecyclerView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/rv_surveys"
-            android:layout_marginTop="?android:attr/actionBarSize"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_marginTop="56dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingBottom="@dimen/md_keylines"
-            android:paddingTop="@dimen/md_keylines"
-            android:visibility="gone"
-            android:scrollbars="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/rv_surveys"
+                android:layout_marginTop="?android:attr/actionBarSize"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/md_keylines"
+                android:paddingTop="@dimen/md_keylines"
+                android:visibility="gone"
+                android:scrollbars="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            </android.support.v7.widget.RecyclerView>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
 
     </FrameLayout>
 

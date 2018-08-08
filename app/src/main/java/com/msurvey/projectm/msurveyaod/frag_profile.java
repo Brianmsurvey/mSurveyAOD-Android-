@@ -1,11 +1,13 @@
 package com.msurvey.projectm.msurveyaod;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -36,12 +38,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.msurvey.projectm.msurveyaod.Utilities.DateUtils;
 import com.msurvey.projectm.msurveyaod.Utilities.EmojiUtils;
 import com.msurvey.projectm.msurveyaod.Utilities.NetworkUtils;
 import com.msurvey.projectm.msurveyaod.Utilities.PhotoUtils;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
+
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -191,13 +198,57 @@ public class frag_profile extends Fragment {
                 mUserFeedbackDatabase
         ) {
             @Override
-            protected void populateViewHolder(FeedbackViewHolder viewHolder, Feedback model, int position) {
+            protected void populateViewHolder(FeedbackViewHolder viewHolder, final Feedback model, int position) {
 
                 viewHolder.setMerchantName(model.getmerchantName());
                 viewHolder.setmMerchantImage(context, model.getmerchantName());
                 viewHolder.setFeedback(model.getFeedbackInput(), model.getOvrResponse());
                 viewHolder.setFeedbackDate(model.getTransactionDate());
                 viewHolder.setFeedbackTime(model.getTransactionTime());
+
+
+                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        final Dialog dialog = new Dialog(context);
+                        dialog.setContentView(R.layout.details_transaction);
+
+                        TextView date = dialog.findViewById(R.id.tv_date);
+                        TextView time = dialog.findViewById(R.id.tv_time);
+                        TextView merchant = dialog.findViewById(R.id.tv_merchant);
+                        TextView amount = dialog.findViewById(R.id.tv_amount);
+                        ImageView merchantImage = dialog.findViewById(R.id.iv_merchant_image);
+
+                        try{
+
+                            date.setText(DateUtils.returnTransactionDate(model.getTransactionDate()));
+
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                        time.setText(model.getTransactionTime());
+                        merchant.setText(model.getmerchantName());
+
+                        if(!TextUtils.isEmpty(model.getAmountTransacted())) {
+                            String amountTrans = "Ksh " + model.getAmountTransacted();
+                            amount.setText(amountTrans);
+                        }
+
+                        ColorGenerator generator = ColorGenerator.MATERIAL;
+                        String letter = model.getmerchantName().substring(0,1);
+                        int color = generator.getRandomColor();
+                        TextDrawable.IBuilder builder = TextDrawable.builder().beginConfig()
+                                .endConfig().round();
+                        TextDrawable drawable = builder.build(letter, color);
+                        merchantImage.setImageDrawable(drawable);
+
+
+                        dialog.show();
+
+                    }
+                });
             }
 
             @Override

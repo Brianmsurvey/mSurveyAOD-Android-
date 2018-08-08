@@ -25,6 +25,14 @@
     <string name="dob_no">-</string>
     <string name="recent_activity">Recent Activity</string>
 
+    <!--Transaction Dialog-->
+    <string name="transaction_title">Transaction Details</string>
+    <string name="transaction_date">Date</string>
+    <string name="transaction_time">Time</string>
+    <string name="transaction_merchant">To</string>
+    <string name="transaction_amount">Amount</string>
+    <string name="transaction_completed">COMPLETED</string>
+
 
     <!--Mock Store -->
     <string name="store_name">Java Coffee House</string>

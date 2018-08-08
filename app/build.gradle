@@ -15,8 +15,8 @@ android {
         applicationId "com.msurvey.projectm.msurveyaod"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 10
-        versionName '2.2'
+        versionCode 11
+        versionName '2.5'
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
