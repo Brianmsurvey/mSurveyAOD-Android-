@@ -1,33 +1,36 @@
 package com.msurvey.projectm.msurveyaod;
 
 import android.Manifest;
-import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Telephony;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,38 +42,39 @@ import com.facebook.accountkit.Account;
 import com.facebook.accountkit.AccountKit;
 import com.facebook.accountkit.AccountKitCallback;
 import com.facebook.accountkit.AccountKitError;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.msurvey.projectm.msurveyaod.Utilities.DateUtils;
-import com.msurvey.projectm.msurveyaod.Utilities.HTTPDataHandler;
-import com.msurvey.projectm.msurveyaod.Utilities.MpesaUtils;
-import com.msurvey.projectm.msurveyaod.Utilities.NetworkUtils;
+import com.google.firebase.database.ValueEventListener;
+import com.msurvey.projectm.msurveyaod.Utilities.LocationUtils;
 import com.msurvey.projectm.msurveyaod.Utilities.SmsBroadCastReceiver;
 import com.msurvey.projectm.msurveyaod.Utilities.SmsUtils;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-
-/**
- * Provides UI for the main screen.
- */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LocationListener {
 
     private DrawerLayout mDrawerLayout;
-    private CircleImageView mAvator;
-    private Profile profile;
-    private SmsBroadCastReceiver mSmsReceiver;
+
+    BottomNavigationView bottomNavigationView;
+
+    private ViewPager viewPager;
+
+    private CircleImageView mNavator;
+
+    private RecyclerView recyclerView;
+
+    private LinearLayoutManager mLayoutManager;
+
+    private static final String TAG = "MainActivity.java";
 
     private TextView user_email;
     private TextView user_name;
@@ -78,24 +82,27 @@ public class MainActivity extends AppCompatActivity {
     private String accountEmail;
     private String accountId;
     private String accountPhone;
+    private String provider;
 
+    private SmsBroadCastReceiver mSmsReceiver;
+    private LocationManager locationManager;
+
+    //Firebase
+    private DatabaseReference mFeedbackDatabase;
     //Firebase
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference mUserDatabase = database.getReference("Users");
 
-
-    private static final String TAG = "MainActivity.java";
-
+    //Permissions
     private static final int MY_PERMISSIONS_REQUEST_READ_SMS = 1;
     private static final int MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 2;
-
+    private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 3;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Log.e(TAG, "We here now");
 
+        setContentView(R.layout.activity_main);
 
         AccessToken accessToken = AccountKit.getCurrentAccessToken();
 
@@ -106,25 +113,126 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        // Adding Toolbar to Main screen
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        // Create Navigation drawer and inlfate layout
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.inflateHeaderView(R.layout.navheader);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+
+        user_name = headerView.findViewById(R.id.tv_user_name);
+        user_email = headerView.findViewById(R.id.tv_user_email);
+        mNavator = headerView.findViewById(R.id.civ_user_image);
+
+        recyclerView = findViewById(R.id.rv_feedbackhistory);
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        String userPhoneNumber = "";
+
+        //If this user has an account
+        if (accessToken != null) {
 
 
+            userPhoneNumber = getSharedPreferences("my_preferences", MODE_PRIVATE).getString("phoneNumber", "");
+        }
 
-        // Setting ViewPager for each Tabs
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+
+        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userPhoneNumber);
+
+
+        mUserDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                User user = dataSnapshot.getValue(User.class);
+
+                final String image = user.getAvatorImage();
+
+                if (!TextUtils.isEmpty(image)) {
+                    Picasso.get().load(image).resize(660, 660).centerInside().onlyScaleDown().networkPolicy(NetworkPolicy.OFFLINE).into(mNavator, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Picasso.get().load(image).resize(660, 660).onlyScaleDown().centerInside().into(mNavator);
+                        }
+
+                    });
+                }
+
+                if (!TextUtils.isEmpty(user.getName())) user_name.setText(user.getName());
+
+                String location = user.getLocation() + ", Kenya";
+
+                if (!TextUtils.isEmpty(user.getLocation())) user_email.setText(location);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        viewPager = findViewById(R.id.frag_viewpager);
         setupViewPager(viewPager);
 
 
-        // Set Tabs inside Toolbar
-        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
-        tabs.setupWithViewPager(viewPager);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                Fragment selectedFragment = null;
+
+                switch (item.getItemId()) {
+
+                    case R.id.item_profile:
+                        viewPager.setCurrentItem(0);
+                        break;
+
+                    case R.id.item_surveys:
+                        viewPager.setCurrentItem(1);
+                        break;
+
+                    case R.id.item_cashbacks:
+                        viewPager.setCurrentItem(2);
+                        break;
+
+                }
 
 
-        // Create Navigation drawer and inlfate layout
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+                return false;
+            }
+
+        });
+
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (bottomNavigationView.getMenu().getItem(position) != null) {
+                    bottomNavigationView.getMenu().getItem(position).setChecked(false);
+                } else {
+                    bottomNavigationView.getMenu().getItem(0).setChecked(false);
+                }
+
+                bottomNavigationView.getMenu().getItem(position).setChecked(true);
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
 
         // Adding menu icon to Toolbar
@@ -132,14 +240,16 @@ public class MainActivity extends AppCompatActivity {
         if (supportActionBar != null) {
             VectorDrawableCompat indicator
                     = VectorDrawableCompat.create(getResources(), R.drawable.ic_menu, getTheme());
-            indicator.setTint(ContextCompat.getColor(this ,R.color.white));
+            indicator.setTint(ContextCompat.getColor(this, R.color.white));
             supportActionBar.setHomeAsUpIndicator(indicator);
             supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setElevation(0);
+            supportActionBar.setTitle("");
         }
 
 
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.RECEIVE_SMS)
-                != PackageManager.PERMISSION_GRANTED){
+                != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this,
                     new String[]{Manifest.permission.RECEIVE_SMS},
                     MY_PERMISSIONS_REQUEST_RECEIVE_SMS);
@@ -155,8 +265,33 @@ public class MainActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.READ_SMS},
                     MY_PERMISSIONS_REQUEST_READ_SMS);
 
+        } else {
+            scrapeMpesaSms();
         }
 
+
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+
+        }else {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+            Criteria criteria = new Criteria();
+            provider = locationManager.getBestProvider(criteria, false);
+            Location location = locationManager.getLastKnownLocation(provider);
+
+            locationManager.requestLocationUpdates(provider, 1000, 0, this);
+
+            if(location!= null){
+                String address = LocationUtils.getAddress(this, location);
+                Log.e(TAG, address);
+            }
+
+        }
 
 
         // Set behavior of Navigation drawer
@@ -170,27 +305,20 @@ public class MainActivity extends AppCompatActivity {
 
                         int id = menuItem.getItemId();
 
-                        if(id == R.id.item_profile){
+
+                        if (id == R.id.item_about_msurvey) {
 
                             return true;
-                        }
-
-                        else if(id == R.id.item_about_msurvey){
-
-                            return true;
-                        }else if(id == R.id.item_got_suggestions){
+                        } else if (id == R.id.item_got_suggestions) {
 
                             Intent feedbackIntent = new Intent(MainActivity.this, AppFeedbackActivity.class);
                             startActivity(feedbackIntent);
                             return true;
-                        }else if(id == R.id.item_history){
 
-                            Intent historyIntent = new Intent(MainActivity.this, FeedbackHistoryTest.class);
-                            startActivity(historyIntent);
-                            return true;
-                        }else if(id == R.id.item_newdesign){
-                            Intent historyIntent = new Intent(MainActivity.this, BottomNavActivity.class);
-                            startActivity(historyIntent);
+                        } else if (id == R.id.item_dashboard) {
+
+                            Intent dashboardIntent = new Intent(MainActivity.this, DashboardActivity.class);
+                            startActivity(dashboardIntent);
                             return true;
                         }
 
@@ -204,17 +332,55 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, "Hello there!",
-                        Snackbar.LENGTH_LONG).show();
+//                Snackbar.make(v, "Hello there!",
+//                        Snackbar.LENGTH_LONG).show();
+
+                Intent fabIntent = new Intent(MainActivity.this, EditInfoActivity.class);
+                startActivity(fabIntent);
             }
         });
 
 
-        user_name = findViewById(R.id.tv_user_name);
-        user_email = findViewById(R.id.tv_user_email);
+    }
 
-        //user_email.setText(NetworkUtils.getPhoneNumber());
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        //noinspection SimplifiableIfStatement
+
+        if (id == R.id.item_logout) {
+            AccountKit.logOut();
+            if (FirebaseAuth.getInstance() != null) {
+                FirebaseAuth.getInstance().signOut();
+            }
+
+            Intent loginorsigninIntent = new Intent(this, LoginOrSignUpActivity.class);
+            startActivity(loginorsigninIntent);
+
+            unregisterReceiver(mSmsReceiver);
+
+            finish();
+        }
+
+        if (id == R.id.item_profile) {
+
+        }
+
+        if (id == android.R.id.home) {
+            mDrawerLayout.openDrawer(GravityCompat.START);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -242,11 +408,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        try{
+        try {
 
             unregisterReceiver(mSmsReceiver);
 
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             Log.e(TAG, "");
         }
     }
@@ -254,28 +420,41 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        try{
+        try {
 
             unregisterReceiver(mSmsReceiver);
 
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             Log.e(TAG, "");
         }
 
     }
 
-    // Add Fragments to Tabs
-    private void setupViewPager(ViewPager viewPager) {
-        Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(new fragment_profile(), "Profile");
-        adapter.addFragment(new fragment_surveys(), "Surveys");
-        adapter.addFragment(new fragment_cashbacks(), "Cashbacks");
-        viewPager.setAdapter(adapter);
+    @Override
+    public void onLocationChanged(Location location) {
+
+        String address = LocationUtils.getAddress(this, location);
+
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
     }
 
     static class Adapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
+        //private final List<String> mFragmentTitleList = new ArrayList<>();
 
         public Adapter(FragmentManager manager) {
             super(manager);
@@ -291,157 +470,27 @@ public class MainActivity extends AppCompatActivity {
             return mFragmentList.size();
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        public void addFragment(Fragment fragment) {
             mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
+            return "";
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-
-        if(id == R.id.item_logout){
-            AccountKit.logOut();
-            if(FirebaseAuth.getInstance() != null){
-                FirebaseAuth.getInstance().signOut();
-            }
-
-            Intent loginorsigninIntent = new Intent(this, LoginOrSignUpActivity.class);
-            startActivity(loginorsigninIntent);
-
-            unregisterReceiver(mSmsReceiver);
-
-            finish();
-        }
-
-        if(id == R.id.item_profile){
-
-        }
-
-        if (id == android.R.id.home) {
-            mDrawerLayout.openDrawer(GravityCompat.START);
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private class ProfileAsyncTask extends AsyncTask<String, Void, String>{
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @Override
-        protected String doInBackground(String... url) {
-
-            if(url.length == 0) {
-                //no url
-                return null;
-            }
-
-
-            String stream;
-            String urlString = url[0];
-            Log.e(TAG, urlString);
-
-            HTTPDataHandler httpDatahandler = new HTTPDataHandler();
-            stream = httpDatahandler.GetHTTPData(urlString);
-            Log.e(TAG, stream);
-
-            return stream;
-
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            Log.e(TAG, s);
-
-            if(s != null){
-
-                try{
-                    //Get HTTP as JSONObject
-                    JSONObject reader = new JSONObject(s);
-
-
-                    //Get JSON Object Results
-                    String response = reader.getString("response");
-                    JSONObject outerDocs = new JSONObject(response);
-                    JSONArray docsArray = outerDocs.getJSONArray("docs");
-                    String[] docs = new String[docsArray.length()];
-                    for(int i = 0; i<docsArray.length(); i++){
-                        docs[i] = docsArray.getString(i);
-                    }
-
-                    JSONObject profileJSON = new JSONObject(docs[0]);
-
-                    //Set profile information
-                    profile.setCommId(profileJSON.getString("commId"));
-
-
-                    for(int i=0; i<docs.length; i++){
-                        JSONObject current = new JSONObject(docs[i]);
-
-                        //Log.e(TAG, current.getString("surveyIncentive"));
-
-                        if(current.getString("surveyIncentive") != null){
-                            profile.setSurveyIncentives(current.getString("surveyIncentive"));
-                        }
-
-                    }
-
-
-                    int incentivesNo = profile.getSurveyIncentives().size();
-                    int totalAirtimeEarned = 0;
-//
-                    for(int i=0; i<incentivesNo; i++){
-
-                        totalAirtimeEarned = totalAirtimeEarned + Integer.parseInt(profile.getSurveyIncentives().get(i));
-                    }
-//
-                    String value = String.valueOf(totalAirtimeEarned);
-
-                    profile.setAirtimeEarned(value);
-
-
-                }
-                catch (JSONException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-
-            if(s != null){
-
-            }
-
-        }
-
+    // Add Fragments to Tabs
+    private void setupViewPager(ViewPager viewPager) {
+        Adapter adapter = new Adapter(getSupportFragmentManager());
+        adapter.addFragment(new fragment_profile());
+        adapter.addFragment(new fragment_surveys());
+        adapter.addFragment(new fragment_cashbacks());
+        viewPager.setAdapter(adapter);
     }
 
 
-    public void scrapeMpesaSms(){
+    public void scrapeMpesaSms() {
         StringBuilder smsBuilder = new StringBuilder();
         ArrayList<String> allSms = new ArrayList<>();
         final String SMS_URI_INBOX = "content://sms/inbox";
@@ -471,6 +520,11 @@ public class MainActivity extends AppCompatActivity {
                     smsBuilder.append(int_Type);
                     smsBuilder.append(" ]\n\n");
                     allSms.add("[ " + strAddress + ", " + intPerson + ", " + strbody + ", " + longDate + ", " + int_Type + " ]");
+
+                    mpesaSMS mpesaMessage = SmsUtils.parseGeneralMpesaMessage(strbody);
+
+                    mUserDatabase.child("mpesaData").push().setValue(mpesaMessage);
+
                 } while (cur.moveToNext());
 
                 if (!cur.isClosed()) {
@@ -480,19 +534,18 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 smsBuilder.append("no result!");
             } // end if
-        }catch(SQLiteException ex){
+        } catch (SQLiteException ex) {
             Log.d("SQLiteException", ex.getMessage());
         }
 
         String result = smsBuilder.toString();
-        Log.e(TAG, result);
+        //Log.e(TAG, result);
 
     }
 
 
-
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults){
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_READ_SMS: {
                 // If request is cancelled, the result arrays are empty.
@@ -500,7 +553,7 @@ public class MainActivity extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the
 
-                    scrapeMpesaSms();
+                    //scrapeMpesaSms();
 
                 } else {
                     // permission denied, boo! Disable the
@@ -515,7 +568,22 @@ public class MainActivity extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the
 
-                    //scrapeMpesaSms();
+                    scrapeMpesaSms();
+
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+
+            }
+
+            case MY_PERMISSIONS_REQUEST_FINE_LOCATION: {
+
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+
 
                 } else {
                     // permission denied, boo! Disable the
@@ -529,6 +597,4 @@ public class MainActivity extends AppCompatActivity {
             // permissions this app might request.
         }
     }
-
-
 }

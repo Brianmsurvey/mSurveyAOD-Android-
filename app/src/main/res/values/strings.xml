@@ -8,9 +8,11 @@
     <string name="this_month">This Month</string>
     <string name="amount_earned">AMOUNT EARNED</string>
     <string name="questions_completed">Questions Answered</string>
+    <string name="cashbacks_given">Cashbacks Earned</string>
     <string name="questions_completed_no">-</string>
     <string name="surveys_completed">Surveys Completed</string>
     <string name="amount_earned_no">-</string>
+    <string name="cashbacks_given_no">250</string>
     <string name="surveys_completed_no">23</string>
     <string name="airtime_earned_cash">3,245</string>
     <string name="ksh">KSH</string>

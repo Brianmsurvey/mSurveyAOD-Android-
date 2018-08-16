@@ -13,6 +13,33 @@
         <item name="outtoday">Eating out today?</item>
     </string-array>
 
+    <string-array name="cashbacks">
+        <item name="one">Ksh 50 cashback</item>
+        <item name="two">Ksh 20 cashback</item>
+        <item name="three">Ksh 60 cashback</item>
+        <item name="four">Ksh 80 cashback</item>
+        <item name="five">Ksh 10 cashback</item>
+        <item name="six">Ksh 90 cashback</item>
+        <item name="seven">Ksh 100 cashback</item>
+        <item name="eight">Ksh 90 cashback</item>
+        <item name="nine">Ksh 30 cashback</item>
+        <item name="ten">Ksh 40 cashback</item>
+        <item name="eleven">Ksh 110 cashback</item>
+        <item name="twelve">Ksh 50 cashback</item>
+        <item name="thirteen">Ksh 60 cashback</item>
+        <item name="fourteen">Ksh 20 cashback</item>
+        <item name="fifteen">Ksh 80 cashback</item>
+        <item name="sixteen">Ksh 90 cashback</item>
+        <item name="seventeen">Ksh 10 cashback</item>
+        <item name="eighteen">Ksh 70 cashback</item>
+        <item name="nineteen">Ksh 50 cashback</item>
+        <item name="twenty">Ksh 200 cashback</item>
+        <item name="twentyone">Ksh 150 cashback</item>
+        <item name="twentytwo">Ksh 50 cashback</item>
+        <item name="twentythree">Ksh 35 cashback</item>
+        <item name="twentyfour">Ksh 60 cashback</item>
+    </string-array>
+    
     <string-array name="genders">
         <item name="male">Male</item>
         <item name="female">Female</item>

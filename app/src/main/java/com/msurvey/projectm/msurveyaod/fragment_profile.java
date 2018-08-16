@@ -1,6 +1,6 @@
 package com.msurvey.projectm.msurveyaod;
 
-import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,19 +8,33 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.facebook.accountkit.AccountKit;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.msurvey.projectm.msurveyaod.Utilities.DateUtils;
+import com.msurvey.projectm.msurveyaod.Utilities.EmojiUtils;
 import com.msurvey.projectm.msurveyaod.Utilities.NetworkUtils;
 import com.msurvey.projectm.msurveyaod.Utilities.PhotoUtils;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -29,35 +43,113 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class fragment_profile extends Fragment {
 
+    private static String userPhoneNumber;
+
     private RecyclerView recyclerView;
+
+    private ImageView mMerchantImage;
+
+    private Toolbar toolbar;
+
+    private TextView mUserName, mLocation, mMerchantName, mFeedback, mDate, mTime;
+    private TextView mAge, mGender, mDob;
+
     private TextView AirtimeEarned;
     private TextView SurveysCompleted;
     private CircleImageView mAvator;
 
-    private static final String TAG = "Fragment profile says: ";
+    private Context context;
+
+    private LinearLayoutManager mLayoutManager;
+    
+    //Firebase
+    private DatabaseReference mFeedbackDatabase;
+    private DatabaseReference mUserDatabase;
+
+    private static final String TAG = "Profile Fragment";
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        final View profileFragmentView = inflater.inflate(R.layout.fragment_profile, container, false);
+        final View profileView = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        recyclerView = profileFragmentView.findViewById(R.id.rv_recents);
+        recyclerView = profileView.findViewById(R.id.rv_feedback);
 
-        AirtimeEarned = profileFragmentView.findViewById(R.id.airtime_earned_no);
-
-        SurveysCompleted = profileFragmentView.findViewById(R.id.questions_completed_no);
-
-        mAvator = profileFragmentView.findViewById(R.id.civ_profile_avator);
+        AirtimeEarned = profileView.findViewById(R.id.airtime_earned_no);
+        SurveysCompleted = profileView.findViewById(R.id.surveys_completed_no);
+        mAvator = profileView.findViewById(R.id.civ_profile_avator);
+        mUserName = profileView.findViewById(R.id.tv_name);
+//        mLocation = profileView.findViewById(R.id.tv_location);
+//        mAge = profileView.findViewById(R.id.tv_age);
+//        mGender = profileView.findViewById(R.id.tv_gender);
+//        mDob = profileView.findViewById(R.id.tv_dob_no);
 
         AirtimeEarned.setText(NetworkUtils.getAirtimeEarned());
 
         SurveysCompleted.setText(NetworkUtils.getSurveysCompletedNo());
 
-        //Get the Shared Preferences
+
+        com.facebook.accountkit.AccessToken accessToken = AccountKit.getCurrentAccessToken();
+
+        //If this user has an account
+        if (accessToken != null) {
+
+
+            userPhoneNumber = getActivity().getSharedPreferences("my_preferences", MODE_PRIVATE).getString("phoneNumber", "");
+        }
+
+
+        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userPhoneNumber);
+
+
+        //Get the Shared Preferences for Phone Number
+        final SharedPreferences prefs = getActivity().getSharedPreferences("my_preferences", MODE_PRIVATE);
+        final String userName = "name";
+
+        if (!prefs.getString(userName, "").equals("")) {
+
+            String name = prefs.getString(userName, "");
+            mUserName.setText(name);
+
+        }
+
+
+        //Get the Shared Preferences for image
         final SharedPreferences preferences = getActivity().getSharedPreferences("my_preferences", MODE_PRIVATE);
         final String imageFound = "image_found";
 
-        if(!preferences.getString(imageFound, "").equals("")) {
+        mUserDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                User user = dataSnapshot.getValue(User.class);
+
+                final String image = user.getAvatorImage();
+
+                if(!TextUtils.isEmpty(image)) setAvatorImage(image);
+
+                if(!TextUtils.isEmpty(user.getName())) mUserName.setText(user.getName());
+
+                String location = user.getLocation() + ", Kenya";
+
+//                if(!TextUtils.isEmpty(user.getLocation())) mLocation.setText(location);
+//
+//                if(!TextUtils.isEmpty(user.getUserAge())) mAge.setText(user.getUserAge());
+//
+//                if(!TextUtils.isEmpty(user.getUserDob())) mDob.setText(user.getUserDob());
+//
+//                if(!TextUtils.isEmpty(user.getUserGender())) mGender.setText(user.getUserGender());
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        if(!preferences.getString(imageFound, "").equals("") && TextUtils.isEmpty(mUserName.getText().toString())) {
 
             Uri image = Uri.parse(preferences.getString(imageFound, ""));
             Picasso.get().load(image).resize(660, 660).centerInside().into(mAvator);
@@ -74,19 +166,96 @@ public class fragment_profile extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Intent changePhotoIntent = new Intent(getActivity(), ChangePhotoActivity.class);
+                Intent changePhotoIntent = new Intent(getActivity(), EditInfoActivity.class);
                 startActivity(changePhotoIntent);
 
             }
         });
 
-        ContentAdapter adapter = new ContentAdapter(recyclerView.getContext());
-        recyclerView.setAdapter(adapter);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        context = getActivity();
 
-        return profileFragmentView;
+
+        userPhoneNumber = getActivity().getSharedPreferences("my_preferences", MODE_PRIVATE).getString("phoneNumber", "");
+
+        Query mUserFeedbackDatabase = FirebaseDatabase.getInstance().getReference().child("TestCustomerFeedback").orderByChild("userNumber").equalTo(userPhoneNumber);
+
+        FirebaseRecyclerAdapter<Feedback, FeedbackViewHolder> FeedbackFirebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Feedback, FeedbackViewHolder>(
+                Feedback.class,
+                R.layout.feedback_row,
+                FeedbackViewHolder.class,
+                mUserFeedbackDatabase
+        ) {
+            @Override
+            protected void populateViewHolder(FeedbackViewHolder viewHolder, final Feedback model, int position) {
+
+                viewHolder.setMerchantName(model.getmerchantName());
+                viewHolder.setmMerchantImage(context, model.getmerchantName());
+                viewHolder.setCashback(context, position);
+                viewHolder.setTransactionAmount(model.getAmountTransacted());
+                viewHolder.setFeedbackTime(model.getTransactionTime());
+
+
+                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        final Dialog dialog = new Dialog(context);
+                        dialog.setContentView(R.layout.details_transaction);
+
+                        TextView date = dialog.findViewById(R.id.tv_date);
+                        TextView time = dialog.findViewById(R.id.tv_time);
+                        TextView merchant = dialog.findViewById(R.id.tv_merchant);
+                        TextView amount = dialog.findViewById(R.id.tv_amount);
+                        ImageView merchantImage = dialog.findViewById(R.id.iv_merchant_image);
+
+                        try{
+
+                            date.setText(DateUtils.returnTransactionDate(model.getTransactionDate()));
+
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                        time.setText(model.getTransactionTime());
+                        merchant.setText(model.getmerchantName());
+
+                        if(!TextUtils.isEmpty(model.getAmountTransacted())) {
+                            String amountTrans = "Ksh " + model.getAmountTransacted();
+                            amount.setText(amountTrans);
+                        }
+
+                        ColorGenerator generator = ColorGenerator.MATERIAL;
+                        String letter = model.getmerchantName().substring(0,1);
+                        int color = generator.getRandomColor();
+                        TextDrawable.IBuilder builder = TextDrawable.builder().beginConfig()
+                                .endConfig().round();
+                        TextDrawable drawable = builder.build(letter, color);
+                        merchantImage.setImageDrawable(drawable);
+
+
+                        dialog.show();
+
+                    }
+                });
+            }
+
+            @Override
+            public FeedbackViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                return super.onCreateViewHolder(parent, viewType);
+            }
+
+        };
+
+        recyclerView.setAdapter(FeedbackFirebaseRecyclerAdapter);
+        mLayoutManager = new LinearLayoutManager(context);
+        mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(mLayoutManager);
+
+
+        return profileView;
     }
+
 
     @Override
     public void onStart() {
@@ -99,64 +268,112 @@ public class fragment_profile extends Fragment {
         }
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView question;
-        public TextView responses;
-        public ViewHolder(LayoutInflater inflater, ViewGroup parent){
-            super(inflater.inflate(R.layout.recents_row, parent, false));
+    public static class FeedbackViewHolder extends RecyclerView.ViewHolder{
 
-            question = itemView.findViewById(R.id.tv_question);
-            responses = itemView.findViewById(R.id.tv_response);
+        View mView;
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+        private TextView mMerchant, mFeedback, mDate, mTime, mCashback, mAmountTransacted;
 
-                }
-            });
+        private ImageView mMerchantImage, mEmoji;
+
+        public FeedbackViewHolder(View itemView) {
+            super(itemView);
+
+            mView = itemView;
+        }
+
+        public void setmMerchantImage(final Context context, final String image){
+
+            mMerchantImage = mView.findViewById(R.id.civ_merchant);
+
+            ColorGenerator generator = ColorGenerator.MATERIAL;
+
+            String letter = image.substring(0,1);
+
+            int color = generator.getRandomColor();
+
+            TextDrawable.IBuilder builder = TextDrawable.builder().beginConfig()
+                    .endConfig().round();
+
+            TextDrawable drawable = builder.build(letter, color);
+
+            mMerchantImage.setImageDrawable(drawable);
 
         }
 
+        public void setMerchantName(String merchantName){
 
-    }
+            mMerchant = mView.findViewById(R.id.tv_merchant);
+            mMerchant.setText(merchantName);
+        }
 
+        public void setFeedback(String feedback, String ovrResponse){
 
-    public static class ContentAdapter extends RecyclerView.Adapter<ViewHolder> {
+            mEmoji = mView.findViewById(R.id.iv_emoji);
 
-        // Set numbers of List in RecyclerView.
-        private static final int LENGTH = 5;
+            mFeedback = mView.findViewById(R.id.tv_feedback);
 
-        private final String[] mQuestions;
-        private final String[] mResponses;
+            if(!TextUtils.isEmpty(feedback)){
+                feedback = '"' + feedback + '"';
+                mFeedback.setText(feedback);
+            }else{
 
+                mEmoji.setVisibility(View.VISIBLE);
+                mFeedback.setVisibility(View.INVISIBLE);
+                EmojiUtils.parseResponseToEmoji(ovrResponse, mEmoji);
+            }
+        }
 
-        public ContentAdapter(Context context) {
+        public void setCashback(Context context, int position){
+
+            mCashback = mView.findViewById(R.id.tv_feedback);
+
             Resources resources = context.getResources();
-            mQuestions = resources.getStringArray(R.array.questions);
-            mResponses = resources.getStringArray(R.array.responses);
-//            TypedArray a = resources.obtainTypedArray(R.array.place_avator);
-//            mPlaceAvators = new Drawable[a.length()];
-//            for (int i = 0; i < mPlaceAvators.length; i++) {
-//                mPlaceAvators[i] = a.getDrawable(i);
-//            }
-//            a.recycle();
-        }
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()), parent);
+
+            final String[] cashbacks = resources.getStringArray(R.array.cashbacks);
+
+            mCashback.setText(cashbacks[position % cashbacks.length]);
+
         }
 
-        @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.question.setText(mQuestions[position % mQuestions.length]);
-            holder.responses.setText(mResponses[position % mResponses.length]);
+        public void setTransactionAmount(String transactionAmount){
+
+            mAmountTransacted = mView.findViewById(R.id.tv_date);
+
+            if(!TextUtils.isEmpty(transactionAmount)) transactionAmount = "- Ksh " + transactionAmount;
+            else transactionAmount = "";
+
+            mAmountTransacted.setText(transactionAmount);
+
         }
 
-        @Override
-        public int getItemCount() {
-            return LENGTH;
+        public void setFeedbackDate(String date){
+
+            mDate = mView.findViewById(R.id.tv_date);
+            mDate.setText(date);
+        }
+
+        public void setFeedbackTime(String time){
+
+            mTime = mView.findViewById(R.id.tv_time);
+            mTime.setText(time);
         }
     }
 
+    public void setAvatorImage(final String image){
+
+        Picasso.get().load(image).resize(660, 660).centerInside().onlyScaleDown().networkPolicy(NetworkPolicy.OFFLINE).into(mAvator, new Callback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Picasso.get().load(image).resize(660, 660).onlyScaleDown().centerInside().into(mAvator);
+            }
+
+        });
+    }
 }

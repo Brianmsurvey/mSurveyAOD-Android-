@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_SMS"/>
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:name=".MSurvey"
@@ -66,15 +67,16 @@
 
         </activity>
 
+        <activity android:name=".DashboardActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
+
         <activity android:name=".EmptyStateActivity"/>
 
         <activity android:name=".EditInfoActivity"/>
 
         <activity android:name=".LoginOrSignUpActivity"/>
-
-        <activity android:name=".MainActivity"/>
-
-        <activity android:name=".LoginActivity"/>
 
         <activity android:name=".SuccessActivity"/>
 
@@ -82,7 +84,7 @@
 
         <activity android:name=".ScrollTestActivity"/>
 
-        <activity android:name=".BottomNavActivity"/>
+        <activity android:name=".MainActivity"/>
 
         <activity android:name=".AppFeedbackActivity">
         <meta-data

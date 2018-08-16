@@ -1,158 +1,317 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-    <android.support.design.widget.AppBarLayout
+
+    <android.support.constraint.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="wrap_content">
 
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/cardview"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="320dp"
-        android:foreground="?android:attr/selectableItemBackground">
-
-        <LinearLayout
+        <FrameLayout
+            android:id="@+id/section_avatar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center|top">
+            android:layout_height="180dp">
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#2196F3"/>
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/civ_profile_avator"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/avatarcircleblue"
+                android:layout_width="88dp"
+                android:layout_height="88dp"
+                android:layout_gravity="center|top"
                 android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp"/>
+                android:src="@drawable/avatarcircleblue" />
+
 
             <TextView
-                android:id="@+id/airtime_earned_title"
+                android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/airtime_earned"
-                android:textSize="12sp"
-                android:textColor="@color/colorPrimary"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/ksh"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ksh"
-                    android:textSize="14sp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginRight="4dp"
-                    android:textColor="@color/colorLightGrey"/>
-
-                <TextView
-                    android:id="@+id/airtime_earned_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/airtime_earned_cash"
-                    android:layout_marginRight="24dp"
-                    android:textSize="42sp"
-                    android:textColor="@color/colorLightGrey"/>
-            </LinearLayout>
+                android:layout_gravity="center"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:fontFamily="sans-serif-medium"
+                android:text="Your Name"
+                android:layout_marginTop="42dp"/>
 
             <TextView
-                android:id="@+id/this_month_title"
+                android:id="@+id/tv_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/this_month"
-                android:layout_marginTop="16dp"
+                android:layout_gravity="center"
                 android:textSize="12sp"
+                android:textColor="@color/white"
+                android:layout_marginTop="64dp"
+                android:text="Nairobi, Kenya"/>
+
+
+
+        </FrameLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/airtime_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/section_avatar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/airtime_earned_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/airtime_earned_cash"
+                android:fontFamily="sans-serif-light"
+                android:textSize="36sp"
                 android:textColor="@color/colorPrimary"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="48dp"
-                android:layout_marginEnd="48dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:layout_gravity="start"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/amount_earned_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/amount_earned"
-                        android:textColor="@color/colorLightGrey"
-                        android:textSize="9sp" />
-
-                    <TextView
-                        android:id="@+id/amount_earned_no"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/amount_earned_no"
-                        android:textColor="@color/colorLightGrey"
-                        android:textSize="24sp" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_gravity="end"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/questions_completed_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/surveys_completed"
-                        android:textColor="@color/colorLightGrey"
-                        android:textSize="9sp" />
-
-                    <TextView
-                        android:id="@+id/questions_completed_no"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/questions_completed_no"
-                        android:textColor="@color/colorLightGrey"
-                        android:textSize="24sp" />
-                </LinearLayout>
-            </LinearLayout>
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/airtime_earned_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/airtime_earned"
+            app:layout_constraintTop_toBottomOf="@+id/airtime_layout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:fontFamily="sans-serif"
+            android:textSize="9sp"
+            android:textColor="@color/colorLightGrey"/>
 
-    </android.support.v7.widget.CardView>
+        <LinearLayout
+            android:id="@+id/surveyscompleted_layout"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/airtime_layout"
+            app:layout_constraintTop_toBottomOf="@+id/section_avatar"
+            app:layout_constraintLeft_toRightOf="@+id/airtime_earned_title"
+            app:layout_constraintRight_toRightOf="parent"
+            android:gravity="center|end"
+            android:layout_marginTop="13dp">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_recents"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/cardview"
-        android:clipToPadding="false"
-        android:paddingBottom="@dimen/md_keylines"
-        android:paddingTop="@dimen/md_keylines"
-        android:scrollbars="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            <TextView
+                android:id="@+id/surveys_completed_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:text="@string/surveys_completed_no"
+                android:textColor="@color/colorPrimary"
+                android:textSize="32sp" />
 
-</RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/surveys_completed_title"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/basicinfo_layout"
+            app:layout_constraintTop_toBottomOf="@+id/surveyscompleted_layout"
+            app:layout_constraintLeft_toRightOf="@+id/airtime_earned_title"
+            app:layout_constraintRight_toRightOf="parent"
+            android:gravity="center"
+            android:text="@string/surveys_completed"
+            android:textColor="@color/colorLightGrey"
+            android:textSize="9sp" />
+
+
+        <LinearLayout
+            android:id="@+id/cashbacks_given_layout"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/airtime_layout"
+            app:layout_constraintTop_toBottomOf="@+id/section_avatar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/airtime_earned_title"
+            android:layout_marginTop="13dp"
+            android:gravity="center|start">
+
+            <TextView
+                android:id="@+id/cashbacks_given_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:text="@string/cashbacks_given_no"
+                android:textColor="@color/colorPrimary"
+                android:textSize="32sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/cashback_given_title"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/airtime_layout"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/cashbacks_given_layout"
+            app:layout_constraintRight_toLeftOf="@+id/airtime_earned_title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:text="@string/cashbacks_given"
+            android:textColor="@color/colorLightGrey"
+            android:textSize="9sp" />
+
+
+        <View
+            android:id="@+id/divider_one"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/airtime_earned_title"
+            app:layout_constraintRight_toLeftOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:background="#e7e7e7"
+            android:layout_below="@id/airtime_earned_title"/>
+
+        <!--<RelativeLayout-->
+            <!--android:id="@+id/basicinfo_layout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="16dp"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/divider_one"-->
+            <!--app:layout_constraintRight_toLeftOf="parent"-->
+            <!--app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--android:layout_marginStart="24dp"-->
+            <!--android:layout_marginEnd="24dp">-->
+
+            <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:layout_below="@+id/tv_basicinfo"-->
+                <!--android:tint="@color/colorLightGrey"-->
+                <!--android:src="@drawable/baseline_info_24"/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_basicinfo"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/basic_info"-->
+                <!--android:textSize="12sp"-->
+                <!--android:textColor="@color/colorPrimary"/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_age_title"-->
+                <!--android:layout_width="48dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:layout_marginStart="48dp"-->
+                <!--android:fontFamily="sans-serif-medium"-->
+                <!--android:gravity="center"-->
+                <!--android:text="@string/age"-->
+                <!--android:layout_below="@+id/tv_basicinfo"-->
+                <!--android:textSize="12sp"/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_age"-->
+                <!--android:layout_width="48dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:layout_marginStart="48dp"-->
+                <!--android:gravity="center"-->
+                <!--android:text="@string/age_no"-->
+                <!--android:layout_below="@+id/tv_age_title"-->
+                <!--android:textColor="@android:color/black"-->
+                <!--android:textSize="12sp"/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_gender_title"-->
+                <!--android:layout_width="48dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:text="@string/gender"-->
+                <!--android:fontFamily="sans-serif-medium"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:layout_below="@+id/tv_basicinfo"-->
+                <!--android:textSize="12sp"/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_gender"-->
+                <!--android:layout_width="48dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:text="@string/gender_selection"-->
+                <!--android:gravity="center"-->
+                <!--android:textColor="@android:color/black"-->
+                <!--android:layout_below="@+id/tv_age_title"-->
+                <!--android:textSize="12sp"/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_dob"-->
+                <!--android:layout_width="72dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:layout_below="@+id/tv_basicinfo"-->
+                <!--android:fontFamily="sans-serif-medium"-->
+                <!--android:layout_marginEnd="24dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:text="@string/dob"-->
+                <!--android:textSize="12sp" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_dob_no"-->
+                <!--android:layout_width="72dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:text="@string/dob_no"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:textColor="@android:color/black"-->
+                <!--android:layout_marginEnd="24dp"-->
+                <!--android:layout_below="@+id/tv_age_title"-->
+                <!--android:textSize="12sp"/>-->
+
+        <!--</RelativeLayout>-->
+
+        <!--<View-->
+            <!--android:id="@+id/divider_two"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_marginTop="16dp"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/divider_one"-->
+            <!--app:layout_constraintRight_toLeftOf="parent"-->
+            <!--app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--android:background="#e7e7e7" />-->
+
+        <TextView
+            android:id="@+id/tv_recent_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/recent_activity"
+            app:layout_constraintTop_toBottomOf="@+id/divider_one"
+            android:layout_marginStart="24dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:textSize="12sp"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginTop="16dp"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_recent_activity"
+            android:layout_marginBottom="56dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_marginTop="8dp"/>
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

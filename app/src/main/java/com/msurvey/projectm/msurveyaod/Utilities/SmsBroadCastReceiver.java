@@ -1,20 +1,14 @@
 package com.msurvey.projectm.msurveyaod.Utilities;
 
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.Telephony;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
+import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.facebook.accountkit.Account;
 import com.facebook.accountkit.AccountKit;
@@ -23,11 +17,6 @@ import com.facebook.accountkit.AccountKitError;
 import com.facebook.accountkit.PhoneNumber;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.msurvey.projectm.msurveyaod.Feedback;
-import com.msurvey.projectm.msurveyaod.MainActivity;
-import com.msurvey.projectm.msurveyaod.R;
-import com.msurvey.projectm.msurveyaod.SplashActivity;
-import com.msurvey.projectm.msurveyaod.User;
 import com.msurvey.projectm.msurveyaod.mpesaSMS;
 
 import java.util.Random;
@@ -185,7 +174,13 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
                             mpesaSMS mpesaSMS;
                             mpesaSMS = SmsUtils.parseSms(message);
 
-                            mUserDatabase.child(userPhoneNumber.replace("+", "")).child("mpesaData").child(mpesaSMS.getTransactionId()).setValue(mpesaSMS);
+                            //userPhoneNumber = userPhoneNumber.replace("+", "");
+
+                            if(!TextUtils.isEmpty(userNumber)){
+                                mUserDatabase.child(userNumber).child("mpesaData").child(mpesaSMS.getTransactionId()).setValue(mpesaSMS);
+                            }else{
+                                mUserDatabase.child("mpesaData").child(mpesaSMS.getTransactionId()).setValue(mpesaSMS);
+                            }
 
 
                             String transactionTime = SmsUtils.returnTransactionTime(message);
@@ -204,6 +199,7 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
                             final String howWasYourExperience = "How was your experience at " + CashReceiver + "?";
 
 
+                            Log.e(TAG, "Made it here");
                             Notification.Builder builder = helper.getChanelNotification(CashReceiver, howWasYourExperience, transactionDateTime);
                             helper.getManager().notify(new Random().nextInt(), builder.build());
 
@@ -215,8 +211,14 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
 
                             mpesaSMS mpesaSMS;
                             mpesaSMS = SmsUtils.parsePaybillSms(message);
-                            mUserDatabase.child(userPhoneNumber.replace("+", "")).child("mpesaData")
-                                    .child(mpesaSMS.getTransactionId()).setValue(mpesaSMS);
+
+                            //userPhoneNumber = userPhoneNumber.replace("+", "");
+
+                            if(!TextUtils.isEmpty(userNumber)){
+                                mUserDatabase.child(userNumber).child("mpesaData").child(mpesaSMS.getTransactionId()).setValue(mpesaSMS);
+                            }else{
+                                mUserDatabase.child("mpesaData").child(mpesaSMS.getTransactionId()).setValue(mpesaSMS);
+                            }
 
                             String transactionTime = SmsUtils.returnTransactionTime(message);
                             String transactionDate = SmsUtils.returnTransactionDate(message);
@@ -229,6 +231,7 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
                             FeedbackUtils.userNumber = userNumber;
                             FeedbackUtils.merchantName = CashReceiver;
 
+
                             String howWasYourExperience = "How was your experience at " + CashReceiver + "?";
                             Notification.Builder builder = helper.getChanelNotification(CashReceiver, howWasYourExperience, transactionDateTime);
                             helper.getManager().notify(new Random().nextInt(), builder.build());
@@ -238,8 +241,13 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
 
                             mpesaSMS mpesaSMS;
                             mpesaSMS = SmsUtils.parseP2PSms(message);
-                            mUserDatabase.child(userPhoneNumber.replace("+", "")).child("mpesaData")
-                                    .child(mpesaSMS.getTransactionId()).setValue(mpesaSMS);
+
+                            //userPhoneNumber = userPhoneNumber.replace("+", "");
+                            if(!TextUtils.isEmpty(userNumber)){
+                                mUserDatabase.child(userNumber).child("mpesaData").child(mpesaSMS.getTransactionId()).setValue(mpesaSMS);
+                            }else{
+                                mUserDatabase.child("mpesaData").child(mpesaSMS.getTransactionId()).setValue(mpesaSMS);
+                            }
                         }
                     }
 

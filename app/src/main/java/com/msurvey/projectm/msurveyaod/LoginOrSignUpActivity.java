@@ -1,13 +1,9 @@
 package com.msurvey.projectm.msurveyaod;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +17,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.accountkit.Account;
@@ -35,12 +30,10 @@ import com.facebook.accountkit.ui.AccountKitConfiguration;
 import com.facebook.accountkit.ui.LoginType;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.msurvey.projectm.msurveyaod.Utilities.HTTPDataHandler;
@@ -155,12 +148,6 @@ public class LoginOrSignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-//                if(NetworkUtils.getPhoneNumber().equals("0")){
-//                    new ProfileAsyncTask().execute(NetworkUtils.getTestUrl());
-//                }else{
-//                    Intent mainIntent = new Intent(LoginOrSignUpActivity.this, MainActivity.class);
-//                    startActivity(mainIntent);
-//                }
 
                 startLoginPage(LoginType.PHONE);
 
@@ -173,15 +160,6 @@ public class LoginOrSignUpActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-//                Intent loginIntent = new Intent(LoginOrSignUpActivity.this, LoginActivity.class);
-//                startActivity(loginIntent);
-
-                //phoneLogin(loginButton);
-
-                //Facebook auth logic
-
-
 
                 LoginManager.getInstance().logInWithReadPermissions(LoginOrSignUpActivity.this, Arrays.asList("public_profile", "email", "user_birthday",
                         "user_friends", "user_gender", "user_likes"));
@@ -289,7 +267,7 @@ public class LoginOrSignUpActivity extends AppCompatActivity {
 
 
 
-                    Intent mainIntent = new Intent(LoginOrSignUpActivity.this, BottomNavActivity.class);
+                    Intent mainIntent = new Intent(LoginOrSignUpActivity.this, MainActivity.class);
                     startActivity(mainIntent);
                     finish();
 
@@ -390,12 +368,7 @@ public class LoginOrSignUpActivity extends AppCompatActivity {
 
                 //The person has no signed in and given us their number so we need to use that
 
-//                if(NetworkUtils.getPhoneNumber().equals("0")){
-//
-//                    new ProfileAsyncTask().execute(NetworkUtils.getCurrent_db_url());
-//                }
-//
-//                startActivity(new Intent(this, MainActivity.class));
+
             }
 
 

@@ -3,29 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:checkableBehavior="single">
 
-        <item android:id="@+id/item_profile"
-            android:icon="@drawable/circle"
-            android:title="@string/item_profile"
-            app:showAsAction="ifRoom"/>
-
-        <item android:id="@+id/item_about_msurvey"
-            android:icon="@drawable/circle"
+        <item
+            android:id="@+id/item_about_msurvey"
+            android:icon="@drawable/baseline_info_24"
+            app:iconTint="@color/colorReallyLightGrey"
             android:title="@string/about_msurvey"
             app:showAsAction="ifRoom"/>
 
-        <item android:id="@+id/item_got_suggestions"
-            android:icon="@drawable/circle"
+        <item
+            android:id="@+id/item_got_suggestions"
+            android:icon="@drawable/baseline_announcement_24"
             android:title="Send feedback"
             app:showAsAction="ifRoom"/>
 
-        <item android:id="@+id/item_history"
-            android:icon="@drawable/circle"
-            android:title="History"
+        <item
+            android:id="@+id/item_dashboard"
+            android:icon="@drawable/baseline_info_24"
+            android:title="Dashboard"
             app:showAsAction="ifRoom"/>
 
-        <item android:id="@+id/item_newdesign"
-            android:icon="@drawable/circle"
-            android:title="New design"
-            app:showAsAction="ifRoom"/>
     </group>
 </menu>

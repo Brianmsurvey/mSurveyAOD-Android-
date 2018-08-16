@@ -259,5 +259,30 @@ public class SmsUtils {
         return StringUtils.regexChecker(message, MpesaUtils.transactionDateRegex);
     }
 
+    public static mpesaSMS parseGeneralMpesaMessage(String message){
+
+        mpesaSMS mpesaSMS = new mpesaSMS();
+
+
+        //Buy goods and services message
+        if(!returnCashReceiver(message).equals("nothing")){
+
+            mpesaSMS = SmsUtils.parseSms(message);
+
+        //Paybill message
+        }else if(!returnPayBillCashReceiver(message).equals("nothing")){
+
+
+            mpesaSMS = SmsUtils.parsePaybillSms(message);
+
+        //P2P message
+        }else if (!returnP2PCashReceiver(message).equals("nothing")){
+
+            mpesaSMS = SmsUtils.parseP2PSms(message);
+
+        }
+
+        return mpesaSMS;
+    }
 }
 

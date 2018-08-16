@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="200dp"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/colorPrimary"
     android:padding="@dimen/md_keylines">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -27,9 +27,8 @@
         android:id="@+id/tv_user_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:layout_below="@+id/tv_user_name"
-        android:textColor="@color/white"
+        android:textColor="#e2e2e2"
         android:text="@string/dummy_user_email"
         android:textSize="@dimen/list_body" />
 </RelativeLayout>

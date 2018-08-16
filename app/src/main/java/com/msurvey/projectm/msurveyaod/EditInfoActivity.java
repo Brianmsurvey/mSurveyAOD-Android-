@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,14 +21,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -48,12 +46,14 @@ public class EditInfoActivity extends AppCompatActivity implements
 
     private TextView mDob, mGender, mLocation;
     private Toolbar toolbar;
-    private EditText mFullName, mAge;
+    private EditText mFullName;
     private FloatingActionButton mFab;
 
     private StorageReference storageReference;
 
-    private String userNumber;
+    private String userNumber, age, provider;
+
+    private LocationManager locationManager;
 
     private CircleImageView mAvator;
     private Uri mImageUri = null;
@@ -70,13 +70,15 @@ public class EditInfoActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_editinfo);
 
         mDob = findViewById(R.id.tv_dob);
-        mAge = findViewById(R.id.et_age);
         mFullName = findViewById(R.id.et_fullName);
         mLocation = findViewById(R.id.tv_location);
         mGender = findViewById(R.id.tv_gender);
 
         mAvator = findViewById(R.id.iv_change_avator);
         mFab = findViewById(R.id.fabSend);
+
+        age = "";
+
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         // Create a storage reference from our app
@@ -129,6 +131,8 @@ public class EditInfoActivity extends AppCompatActivity implements
 
                 }
 
+                age = DateUtils.getAge(datePicker.getYear(), datePicker.getMonth() + 1, datePicker.getDayOfMonth());
+
                 mDob.setText(collectiveDate);
                 mDob.setTextColor(ContextCompat.getColor(EditInfoActivity.this, R.color.colorDarkGrey));
             }
@@ -137,13 +141,6 @@ public class EditInfoActivity extends AppCompatActivity implements
 
         final DatePickerDialog datePickerDialog = new DatePickerDialog(this, R.style.MyDialogTheme, listener, 1990, 1, 1);
 
-
-        mAge.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
         mLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,18 +225,17 @@ public class EditInfoActivity extends AppCompatActivity implements
 
                                     mUserDatabase.child("name").setValue(name);
                                     if(!TextUtils.equals(mDob.getText().toString(), "Date Of Birth")) mUserDatabase.child("userDob").setValue(mDob.getText().toString());
-                                    if(!TextUtils.equals(mAge.getText().toString(), "Age")) mUserDatabase.child("userAge").setValue(mAge.getText().toString());
+                                    if(!TextUtils.equals(age, "")) mUserDatabase.child("userAge").setValue(age);
                                     if(!TextUtils.equals(mGender.getText().toString(), "Gender")) mUserDatabase.child("userGender").setValue(mGender.getText().toString());
                                     if(!TextUtils.equals(mLocation.getText().toString(), "Location")) mUserDatabase.child("location").setValue(mLocation.getText().toString());
                                     mUserDatabase.child("avatorImage").setValue(downloadUri.toString());
 
                                     mDob.setText("Date of Birth");
-                                    mAge.setText("Age");
                                     mLocation.setText("Location");
 
                                     Snackbar.make(view, "Changes saved", Snackbar.LENGTH_SHORT).show();
 
-                                    Intent intent = new Intent(EditInfoActivity.this, BottomNavActivity.class);
+                                    Intent intent = new Intent(EditInfoActivity.this, MainActivity.class);
                                     startActivity(intent);
 
                                 } else {
@@ -262,7 +258,7 @@ public class EditInfoActivity extends AppCompatActivity implements
 
                         mUserDatabase.child("name").setValue(name);
                         if(!TextUtils.equals(mDob.getText().toString(), "Date Of Birth")) mUserDatabase.child("userDob").setValue(mDob.getText().toString());
-                        if(!TextUtils.equals(mAge.getText().toString(), "Age")) mUserDatabase.child("userAge").setValue(mAge.getText().toString());
+                        if(!TextUtils.equals(age, "")) mUserDatabase.child("userAge").setValue(age);
                         if(!TextUtils.equals(mLocation.getText().toString(), "Location")) mUserDatabase.child("location").setValue(mLocation.getText().toString());
                     }
                 }else{
@@ -347,6 +343,8 @@ public class EditInfoActivity extends AppCompatActivity implements
         String day = String.valueOf(datePicker.getDayOfMonth());
         String month = String.valueOf(datePicker.getMonth() + 1);
         String year = String.valueOf(datePicker.getYear());
+
+
         String collectiveDate = day + "/" + month + "/" + year;
 
         try{
@@ -358,6 +356,7 @@ public class EditInfoActivity extends AppCompatActivity implements
         }
 
         Log.e(TAG, collectiveDate);
+        age = DateUtils.getAge(datePicker.getYear(), datePicker.getMonth() + 1, datePicker.getDayOfMonth());
         mDob.setText(collectiveDate);
     }
 
@@ -368,6 +367,8 @@ public class EditInfoActivity extends AppCompatActivity implements
         builder.setTitle("Gender");
 
         final String[] items = getResources().getStringArray(R.array.genders);
+
+        mGender.setText(items[0]);
 
         builder.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener(){
 
@@ -417,6 +418,8 @@ public class EditInfoActivity extends AppCompatActivity implements
 
 
         final String[] items = getResources().getStringArray(R.array.location);
+
+        mLocation.setText(items[0]);
         builder.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener(){
 
 

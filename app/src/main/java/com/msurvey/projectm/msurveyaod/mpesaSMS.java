@@ -44,7 +44,7 @@ public class mpesaSMS {
 
 
     public  String getTransactionId() {
-        return transactionId;
+        return this.transactionId;
     }
 
     public  String getAmountTransacted() {
@@ -106,4 +106,6 @@ public class mpesaSMS {
     public void setTransactionType(String transactionType) {
         this.transactionType = transactionType;
     }
+
+
 }

@@ -8,7 +8,6 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -106,13 +105,6 @@ public class SplashActivity extends AppCompatActivity {
                             new ProfileAsyncTask().execute(NetworkUtils.getCurrent_db_url());
 
 
-//                            if(NetworkUtils.getPhoneNumber().equals("0")){
-//                                new ProfileAsyncTask().execute(NetworkUtils.getCurrent_db_url());
-//                            }
-
-//                            Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
-//                            startActivity(mainIntent);
-//                            finish();
                         }
 
                         @Override
@@ -234,7 +226,7 @@ public class SplashActivity extends AppCompatActivity {
 
                     progressBar.setVisibility(View.INVISIBLE);
 
-                    Intent mainIntent = new Intent(SplashActivity.this, BottomNavActivity.class);
+                    Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
                     startActivity(mainIntent);
                     finish();
 

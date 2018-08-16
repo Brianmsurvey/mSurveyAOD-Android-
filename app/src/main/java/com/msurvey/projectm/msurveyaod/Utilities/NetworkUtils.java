@@ -1,13 +1,8 @@
 package com.msurvey.projectm.msurveyaod.Utilities;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.Log;
-
-import com.msurvey.projectm.msurveyaod.fragment_profile;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -195,13 +190,6 @@ public class NetworkUtils {
                     String value = String.valueOf(totalAirtimeEarned);
 
                     //profile.setAirtimeEarned(value);
-
-                    fragment_profile f = new fragment_profile();
-                    Bundle args = new Bundle();
-                    args.putString("airtime", value);
-                    f.setArguments(args);
-                    String mess = "The bundle contains some of that: " + args.get("airtime");
-                    Log.e(TAG, mess);
 
 
                 } catch (JSONException e) {

@@ -28,6 +28,6 @@
         android:layout_height="250dp"
         android:src="@drawable/cashback"
         android:layout_gravity="center"
-        android:layout_marginTop="120dp"/>
+        android:layout_marginTop="96dp"/>
 
 </LinearLayout>
